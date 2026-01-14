@@ -258,92 +258,282 @@
 
         function render() {
             db.forEach(m => {
-                const card = `
-                    <div class="card" onclick="openDetails(${m.id})">
-                        <img class="poster-img" src="${m.poster}">
-                        <div class="card-body">
-                            <div class="rating-row"><i class="fa-solid fa-star"></i> ${m.rating}</div>
-                            <div class="movie-title">${m.title}</div>
-                            <div class="watch-btn">Watch options</div>
-                            <div class="trailer-btn" onclick="event.stopPropagation(); openDetails(${m.id})">
-                                <i class="fa-solid fa-play"></i> Trailer
-                            </div>
-                        </div>
-                    </div>
-                `;
-                if(m.type === 'top') topCont.innerHTML += card;
-                else fanCont.innerHTML += card;
-            });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK FLIX - Ultimate</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- THEME SETUP --- */
+        :root {
+            --bg: #000000;
+            --card: #121212;
+            --text: #ffffff;
+            --text-dim: #b3b3b3;
+            --accent: #F5C518; /* IMDb Yellow */
+            --blue: #5799ef;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 20px; }
+        ::-webkit-scrollbar { display: none; }
+
+        /* --- HEADER --- */
+        header {
+            padding: 15px 20px; background: #121212; position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; background: var(--accent); color: black; padding: 2px 8px; border-radius: 4px; }
+        .insta-link { color: white; font-size: 1.6rem; transition: 0.3s; }
+        .insta-link:hover { color: #d62976; }
+
+        /* --- SECTIONS --- */
+        .section-head {
+            padding: 20px 15px 10px; border-left: 4px solid var(--accent); margin-left: 15px; margin-top: 15px;
+        }
+        .sec-title { font-size: 1.3rem; font-weight: 700; color: white; }
+        .sec-sub { font-size: 0.9rem; color: var(--text-dim); margin-top: 5px; }
+
+        .scroll-box {
+            display: flex; overflow-x: auto; gap: 15px; padding: 15px; scroll-behavior: smooth;
         }
 
-        // --- 3. MODAL LOGIC ---
-        const modal = document.getElementById('modal');
-        const vidBox = document.getElementById('vidBox');
+        /* --- CARDS --- */
+        .card {
+            min-width: 150px; max-width: 150px; background: var(--card);
+            border-radius: 0 0 8px 8px; overflow: hidden; position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+        }
+        .poster { width: 100%; height: 220px; object-fit: cover; background: #222; }
+        .card-body { padding: 10px; }
+        
+        .rating { color: var(--text-dim); font-size: 0.8rem; display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+        .rating i { color: var(--accent); }
+        
+        .m-name { font-size: 0.95rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 10px; }
+        
+        .btn-opt { background: #2c2c2c; color: var(--blue); text-align: center; padding: 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; }
+        .btn-trail { border: 1px solid #444; color: white; padding: 6px; border-radius: 20px; font-size: 0.8rem; display: flex; justify-content: center; gap: 5px; align-items: center; cursor: pointer; }
 
-        function openDetails(id) {
+        /* --- MODAL (DETAILS) --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 2000; overflow-y: auto;
+        }
+        .vid-sticky { position: sticky; top: 0; width: 100%; aspect-ratio: 16/9; background: black; z-index: 10; border-bottom: 1px solid #333; }
+        .vid-sticky iframe { width: 100%; height: 100%; border: 0; }
+
+        .m-content { padding: 20px; }
+        .m-head { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .m-big-title { font-size: 1.8rem; line-height: 1.2; width: 85%; }
+        .m-close { font-size: 1.8rem; color: #888; cursor: pointer; }
+        
+        .m-meta { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
+        
+        /* Deep Details */
+        .detail-table { background: #121212; padding: 15px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #333; }
+        .row { display: flex; border-bottom: 1px solid #222; padding: 10px 0; }
+        .row:last-child { border-bottom: none; }
+        .lbl { width: 100px; font-weight: 700; color: white; font-size: 0.9rem; }
+        .val { flex: 1; color: var(--blue); font-size: 0.9rem; }
+
+        /* Review Section */
+        .review-box { margin-bottom: 30px; }
+        .review-head { font-size: 1.2rem; color: var(--accent); font-weight: 700; border-left: 4px solid var(--accent); padding-left: 10px; margin-bottom: 10px; }
+        .review-text { color: #ddd; line-height: 1.6; font-size: 1rem; }
+
+        .watch-now { display: block; width: 100%; background: var(--accent); color: black; font-weight: 900; text-align: center; padding: 15px; border-radius: 6px; text-decoration: none; font-size: 1.1rem; margin-bottom: 30px; }
+
+        /* FOOTER */
+        footer { text-align: center; padding: 30px; border-top: 1px solid #222; margin-top: 20px; color: #666; font-size: 0.9rem; }
+        .dev { color: var(--accent); font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">SK FLIX</div>
+        <a href="https://www.instagram.com/shoav_khan_00" target="_blank" class="insta-link">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+    </header>
+
+    <div class="section-head">
+        <div class="sec-title">Top Picks ></div>
+        <div class="sec-sub">Recommended for you</div>
+    </div>
+    <div class="scroll-box" id="topBox"></div>
+
+    <div class="section-head">
+        <div class="sec-title">Fan Favorites ></div>
+        <div class="sec-sub">Most loved by audience</div>
+    </div>
+    <div class="scroll-box" id="fanBox"></div>
+
+    <footer>
+        © 2026 SK FLIX<br>
+        Developed by <span class="dev">Shoav Khan</span>
+    </footer>
+
+    <div id="modal" class="modal">
+        <div class="vid-sticky" id="vidBox"></div>
+        <div class="m-content">
+            <div class="m-head">
+                <h1 class="m-big-title" id="m-title">Title</h1>
+                <i class="fa-solid fa-xmark m-close" onclick="closeModal()"></i>
+            </div>
+            <div class="m-meta" id="m-meta">2024 • UA • 2h</div>
+
+            <div class="detail-table">
+                <div class="row"><div class="lbl">Director</div><div class="val" id="d-dir"></div></div>
+                <div class="row"><div class="lbl">Cast</div><div class="val" id="d-cast"></div></div>
+                <div class="row"><div class="lbl">Music</div><div class="val" id="d-music"></div></div>
+                <div class="row"><div class="lbl">Budget</div><div class="val" id="d-bud"></div></div>
+                <div class="row"><div class="lbl">Box Office</div><div class="val" id="d-box"></div></div>
+            </div>
+
+            <div class="review-box">
+                <div class="review-head">Review & Story</div>
+                <p class="review-text" id="m-review"></p>
+            </div>
+
+            <a href="#" id="m-link" target="_blank" class="watch-now">
+                <i class="fa-solid fa-play"></i> Watch Now
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA (Fixed Raanjhanaa Video & Permanent Images) ---
+        const db = [
+            {
+                id: 1, type: "top",
+                title: "Raanjhanaa",
+                rating: "7.6", year: "2013", cert: "UA", time: "2h 20m",
+                poster: "https://upload.wikimedia.org/wikipedia/en/2/29/Raanjhanaa_poster.jpg",
+                // FIXED VIDEO: Title Track (Always works)
+                trailer: "os61rWd6-54", 
+                link: "https://www.primevideo.com",
+                dir: "Aanand L. Rai",
+                cast: "Dhanush, Sonam Kapoor, Abhay Deol",
+                music: "A.R. Rahman",
+                bud: "₹35 Crore",
+                box: "₹135 Crore (Super Hit)",
+                review: "<strong>The Story:</strong> Kundan, a Hindu boy from Banaras, falls in love with Zoya, a Muslim girl, in his childhood. His love is obsessive and breaks all boundaries. <br><br><strong>Review:</strong> This movie is a masterpiece. Dhanush's acting is raw and real. A.R. Rahman's music brings life to the streets of Banaras. The climax will leave you in tears."
+            },
+            {
+                id: 2, type: "top",
+                title: "Stranger Things",
+                rating: "8.7", year: "2016", cert: "16+", time: "4 Seasons",
+                poster: "https://upload.wikimedia.org/wikipedia/en/5/58/Stranger_Things_season_4.jpg",
+                trailer: "b9EkMc79ZSU",
+                link: "https://www.netflix.com",
+                dir: "The Duffer Brothers",
+                cast: "Millie Bobby Brown, Finn Wolfhard",
+                music: "Kyle Dixon & Michael Stein",
+                bud: "$270 Million (Season 4)",
+                box: "Netflix Most Watched",
+                review: "<strong>The Story:</strong> A group of kids in the 80s uncover government secrets and monsters from another dimension. <br><br><strong>Review:</strong> Pure nostalgia! The blend of horror and friendship is perfect. Steve Harrington's character arc is the best. Must watch for sci-fi fans."
+            },
+            {
+                id: 3, type: "fan",
+                title: "Your Name",
+                rating: "8.4", year: "2016", cert: "U", time: "1h 46m",
+                poster: "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png",
+                trailer: "xU47nhruN-Q",
+                link: "https://www.netflix.com",
+                dir: "Makoto Shinkai",
+                cast: "Ryunosuke Kamiki, Mone Kamishiraishi",
+                music: "RADWIMPS",
+                bud: "$10 Million",
+                box: "$382 Million (Blockbuster)",
+                review: "<strong>The Story:</strong> Two teenagers swap bodies and fall in love across time and distance. <br><br><strong>Review:</strong> A visual miracle. The animation is breathtaking. The comet scene coupled with 'Sparkle' song is magical."
+            },
+            {
+                id: 4, type: "fan",
+                title: "Sanju",
+                rating: "7.6", year: "2018", cert: "A", time: "2h 35m",
+                poster: "https://upload.wikimedia.org/wikipedia/en/2/22/Sanju_poster.jpeg",
+                trailer: "1J76wN0TPI4",
+                link: "https://www.hotstar.com",
+                dir: "Rajkumar Hirani",
+                cast: "Ranbir Kapoor, Vicky Kaushal",
+                music: "A.R. Rahman, Rohan-Rohan",
+                bud: "₹100 Crore",
+                box: "₹586.85 Crore",
+                review: "<strong>The Story:</strong> A biopic on the controversial life of Sanjay Dutt. <br><br><strong>Review:</strong> Ranbir Kapoor doesn't act; he becomes Sanju. An emotional rollercoaster that shows the dark side of fame."
+            }
+        ];
+
+        // --- RENDER ---
+        const tBox = document.getElementById('topBox');
+        const fBox = document.getElementById('fanBox');
+
+        db.forEach(m => {
+            const card = `
+                <div class="card" onclick="openD(${m.id})">
+                    <img src="${m.poster}" class="poster">
+                    <div class="card-body">
+                        <div class="rating"><i class="fa-solid fa-star"></i> ${m.rating}</div>
+                        <div class="m-name">${m.title}</div>
+                        <div class="btn-opt">Watch options</div>
+                        <div class="btn-trail" onclick="event.stopPropagation(); openD(${m.id})">
+                            <i class="fa-solid fa-play"></i> Trailer
+                        </div>
+                    </div>
+                </div>
+            `;
+            if(m.type === 'top') tBox.innerHTML += card;
+            else fBox.innerHTML += card;
+        });
+
+        // --- MODAL LOGIC ---
+        const modal = document.getElementById('modal');
+        const vBox = document.getElementById('vidBox');
+
+        function openD(id) {
             const m = db.find(x => x.id === id);
             
-            // Header Info
+            // Fill Data
             document.getElementById('m-title').innerText = m.title;
             document.getElementById('m-meta').innerText = `${m.year} • ${m.cert} • ${m.time}`;
-            document.getElementById('m-poster').src = m.poster;
-            document.getElementById('m-rating').innerText = m.rating;
-            document.getElementById('m-plot').innerText = m.plot;
             document.getElementById('m-link').href = m.link;
-
-            // Details List
+            
             document.getElementById('d-dir').innerText = m.dir;
-            document.getElementById('d-write').innerText = m.writers;
-            document.getElementById('d-date').innerText = m.date;
-            document.getElementById('d-bud').innerText = m.budget;
+            document.getElementById('d-cast').innerText = m.cast;
+            document.getElementById('d-music').innerText = m.music;
+            document.getElementById('d-bud').innerText = m.bud;
+            document.getElementById('d-box').innerText = m.box;
+            
+            document.getElementById('m-review').innerHTML = m.review;
 
-            // Genres
-            const gBox = document.getElementById('m-genres');
-            gBox.innerHTML = "";
-            m.genres.forEach(g => {
-                gBox.innerHTML += `<span class="chip">${g}</span>`;
-            });
-
-            // Cast
-            const cBox = document.getElementById('castBox');
-            cBox.innerHTML = "";
-            m.cast.forEach(c => {
-                cBox.innerHTML += `
-                    <div class="cast-card">
-                        <img src="${c.img}" class="cast-img">
-                        <div class="cast-name">${c.name}</div>
-                        <div class="cast-role">${c.role}</div>
-                    </div>
-                `;
-            });
-
-            // Video Fix (Error Proof)
-            vidBox.innerHTML = `
-                <iframe src="https://www.youtube.com/embed/${m.trailer}?autoplay=1&rel=0&modestbranding=1&playsinline=1" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen></iframe>`;
+            // Video Load
+            vBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${m.trailer}?autoplay=1&rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            history.pushState({open: true}, null, "");
+            history.pushState({m: true}, null, "");
         }
 
         function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            vidBox.innerHTML = "";
+            vBox.innerHTML = "";
             if(history.state) history.back();
         }
 
         window.onpopstate = function() {
-            if (modal.style.display === 'block') {
+            if(modal.style.display === 'block') {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-                vidBox.innerHTML = "";
+                vBox.innerHTML = "";
             }
-        };
-
-        render();
+        }
     </script>
 </body>
 </html>
