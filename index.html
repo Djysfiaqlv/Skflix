@@ -3,372 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK FLIX - Premium</title>
+    <title>SK FLIX - Ultimate Pro</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. PREMIUM THEME --- */
+        /* --- 1. THEME: DARK PREMIUM --- */
         :root {
-            --bg: #050505;
-            --surface: #141414;
-            --primary: #E50914; /* Netflix Red */
-            --text: #ffffff;
-            --text-dim: #a3a3a3;
-            --badge-bg: #333;
+            --bg: #000000;
+            --card-bg: #1A1A1A;
+            --text-main: #FFFFFF;
+            --text-dim: #B3B3B3;
+            --accent: #F5C518; /* IMDb Yellow */
+            --tech-green: #46d369; /* For Quality Text */
+            --blue-link: #5799ef;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 30px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text-main); padding-bottom: 40px; }
         ::-webkit-scrollbar { display: none; }
 
         /* --- 2. HEADER --- */
         header {
-            padding: 15px 20px; background: rgba(0,0,0,0.9); position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px);
-            border-bottom: 1px solid #222;
+            padding: 15px 20px; background: #121212; position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
         }
-        .logo { font-size: 1.8rem; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
-        .logo span { color: white; }
+        .logo { font-size: 1.6rem; font-weight: 900; background: var(--accent); color: black; padding: 2px 8px; border-radius: 4px; letter-spacing: 1px; }
+        .insta-btn { color: white; font-size: 1.6rem; transition: 0.3s; }
+        .insta-btn:hover { color: #d62976; }
 
-        /* --- 3. GRID --- */
-        .container { padding: 20px; }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px;
+        /* --- 3. HORIZONTAL SCROLL SECTIONS --- */
+        .sec-header {
+            padding: 25px 15px 10px; border-left: 4px solid var(--accent); margin-left: 15px; margin-top: 10px;
         }
-        .card { 
-            background: var(--surface); border-radius: 8px; overflow: hidden; cursor: pointer; 
-            transition: transform 0.2s; position: relative;
+        .sec-title { font-size: 1.3rem; font-weight: 700; color: white; line-height: 1; }
+        .sec-sub { font-size: 0.9rem; color: var(--text-dim); margin-top: 5px; }
+
+        .scroll-row {
+            display: flex; gap: 15px; overflow-x: auto; padding: 10px 15px 20px 15px; scroll-behavior: smooth;
         }
-        .card:active { transform: scale(0.98); }
-        .poster { width: 100%; height: 210px; object-fit: cover; }
+
+        /* --- 4. CARD DESIGN (IMDb Style + Quality Tag) --- */
+        .card {
+            min-width: 160px; max-width: 160px; background: var(--card-bg);
+            border-radius: 0 0 8px 8px; overflow: hidden; position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+        }
         
-        .quality-tag {
-            position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.8);
-            color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;
-            border: 1px solid #555;
+        /* Quality Badge on Card */
+        .quality-badge {
+            position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.85); 
+            color: var(--tech-green); font-size: 0.7rem; padding: 2px 6px; 
+            border: 1px solid var(--tech-green); border-radius: 4px; font-weight: 700; z-index: 2;
         }
 
-        .card-details { padding: 10px; }
-        .c-title { font-size: 0.95rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .c-meta { font-size: 0.8rem; color: var(--text-dim); margin-top: 4px; display: flex; justify-content: space-between; }
+        .poster-img { width: 100%; height: 240px; object-fit: cover; background: #222; }
+        
+        .card-body { padding: 10px; }
+        .rating { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .rating i { color: var(--accent); }
+        
+        .m-name { font-size: 0.95rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 12px; }
 
-        /* --- 4. FULL SCREEN DETAILS MODAL --- */
+        .btn-watch-opt {
+            background: #2C2C2C; color: var(--blue-link); text-align: center;
+            padding: 9px 0; border-radius: 4px; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; cursor: pointer;
+        }
+        .btn-trailer {
+            background: transparent; border: 1px solid #555; color: white;
+            padding: 6px 0; border-radius: 20px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer;
+        }
+
+        /* --- 5. MODAL (DETAILS PAGE) --- */
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 2000; overflow-y: auto;
         }
         
-        /* Sticky Trailer Area */
-        .video-area {
-            position: sticky; top: 0; width: 100%; aspect-ratio: 16/9; background: black; z-index: 10;
-            border-bottom: 1px solid #333;
-        }
-        .video-area iframe { width: 100%; height: 100%; border: 0; }
+        /* Sticky Video */
+        .video-sticky { position: sticky; top: 0; width: 100%; aspect-ratio: 16/9; background: black; z-index: 10; border-bottom: 1px solid #333; }
+        .video-sticky iframe { width: 100%; height: 100%; border: 0; }
 
-        .m-content { padding: 20px; max-width: 800px; margin: 0 auto; }
+        .m-content { padding: 20px; }
         
-        .m-header { margin-bottom: 15px; }
-        .m-title { font-size: 2rem; font-weight: 800; line-height: 1.1; margin-bottom: 5px; }
-        .m-close { 
-            position: absolute; top: 15px; right: 15px; z-index: 100;
-            background: rgba(0,0,0,0.5); border-radius: 50%; width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-        }
+        .m-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .m-big-title { font-size: 1.8rem; font-weight: 600; line-height: 1.1; width: 85%; }
+        .m-close { font-size: 2rem; color: #888; cursor: pointer; }
 
-        /* Technical Badges (Netflix Style) */
-        .tech-row { display: flex; gap: 8px; align-items: center; margin-bottom: 15px; flex-wrap: wrap; }
-        .badge { 
-            border: 1px solid #555; color: #ddd; font-size: 0.7rem; padding: 2px 6px; 
-            border-radius: 3px; font-weight: 700; letter-spacing: 0.5px;
-        }
-        .match-score { color: #46d369; font-weight: 700; font-size: 0.9rem; margin-right: 10px; }
-
-        /* Action Button */
+        /* Watch Button */
         .play-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; background: white; color: black; font-weight: 700;
-            padding: 14px; border-radius: 4px; text-decoration: none; font-size: 1.1rem;
-            margin-bottom: 25px; transition: 0.2s;
+            display: block; width: 100%; background: var(--accent); color: black;
+            text-align: center; font-weight: 900; padding: 14px; border-radius: 4px;
+            font-size: 1.1rem; text-decoration: none; margin-bottom: 25px;
         }
-        .play-btn:hover { opacity: 0.9; }
-        .play-btn i { font-size: 1.2rem; }
 
-        /* Tabs / Sections */
-        .section-title { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 10px; border-left: 3px solid var(--primary); padding-left: 10px; }
-        
-        .text-block { color: #ccc; font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; text-align: justify; }
-        
-        /* A-Z Details Table */
-        .info-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;
-            background: #111; padding: 15px; border-radius: 8px;
+        /* TECHNICAL SPECS BOX (Like Download Sites) */
+        .tech-box {
+            background: #121212; border: 1px solid #333; border-radius: 8px; padding: 15px; margin-bottom: 25px;
+            border-left: 4px solid var(--blue-link);
         }
-        .info-item { display: flex; flex-direction: column; }
-        .i-label { font-size: 0.75rem; color: #777; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-        .i-val { font-size: 0.9rem; color: #eee; }
+        .tech-head { color: var(--blue-link); font-weight: 700; margin-bottom: 10px; font-size: 1rem; text-transform: uppercase; }
+        .tech-list { list-style: none; font-size: 0.9rem; line-height: 1.8; color: #ccc; }
+        .tech-list li { border-bottom: 1px solid #222; padding: 5px 0; }
+        .tech-list li:last-child { border-bottom: none; }
+        .t-label { color: white; font-weight: 700; width: 90px; display: inline-block; }
+        .t-high { color: var(--tech-green); font-weight: bold; }
 
-        /* Cast Row */
-        .cast-scroll { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
-        .cast-card { text-align: center; min-width: 90px; }
-        .cast-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid #333; }
-        .cast-name { font-size: 0.8rem; color: #ccc; }
+        /* Sections */
+        .lbl { font-size: 1.1rem; color: white; font-weight: 700; margin-bottom: 10px; border-left: 3px solid var(--accent); padding-left: 10px; }
+        .txt { color: #ddd; line-height: 1.6; font-size: 0.95rem; margin-bottom: 25px; text-align: justify; }
+
+        /* Cast */
+        .cast-row { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .cast-c { text-align: center; min-width: 80px; }
+        .cast-i { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid #333; background: #222; }
+        .cast-n { font-size: 0.75rem; color: #ccc; }
+
+        /* Footer */
+        footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; margin-top: 20px; color: #666; font-size: 0.9rem; }
+        .dev { color: var(--accent); font-weight: bold; }
 
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">SK <span>FLIX</span></div>
-        <i class="fa-solid fa-user-astronaut" style="color: white; font-size: 1.5rem;"></i>
+        <div class="logo">SK FLIX</div>
+        <a href="https://www.instagram.com/shoav_khan_00" target="_blank" class="insta-btn">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
     </header>
 
-    <div class="container">
-        <h3 style="margin-bottom: 15px; color: #ddd;">Trending Now</h3>
-        <div class="grid" id="mainGrid"></div>
+    <div class="sec-header">
+        <div class="sec-title">Top Picks ></div>
+        <div class="sec-sub">TV shows and movies just for you</div>
     </div>
+    <div class="scroll-row" id="row1"></div>
+
+    <div class="sec-header">
+        <div class="sec-title">Fan Favorites ></div>
+        <div class="sec-sub">Most loved by audience</div>
+    </div>
+    <div class="scroll-row" id="row2"></div>
+
+    <footer>
+        © 2026 SK FLIX Reviews.<br>
+        Developed by <span class="dev">Shoav Khan</span>
+    </footer>
 
     <div id="modal" class="modal">
-        <div class="m-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+        <div class="video-sticky" id="vidBox"></div>
         
-        <div class="video-area" id="vidPlayer"></div>
-
         <div class="m-content">
-            <div class="m-header">
-                <h1 class="m-title" id="m-title">Title</h1>
-                
-                <div class="tech-row">
-                    <span class="match-score" id="m-score">98% Match</span>
-                    <span class="badge" id="m-year">2024</span>
-                    <span class="badge" id="m-age">U/A 16+</span>
-                    <span class="badge" id="m-res">4K UHD</span> <span class="badge" id="m-hdr">HDR</span>
-                    <span class="badge" id="m-audio">5.1</span>
-                </div>
+            <div class="m-head">
+                <h1 class="m-big-title" id="m-title">Title</h1>
+                <i class="fa-solid fa-xmark m-close" onclick="closeModal()"></i>
+            </div>
+
+            <div class="tech-box">
+                <div class="tech-head">File Information</div>
+                <ul class="tech-list">
+                    <li><span class="t-label">Full Name:</span> <span id="t-name"></span></li>
+                    <li><span class="t-label">Language:</span> <span id="t-lang"></span></li>
+                    <li><span class="t-label">Release:</span> <span id="t-year"></span></li>
+                    <li><span class="t-label">Size:</span> <span id="t-size"></span></li>
+                    <li><span class="t-label">Quality:</span> <span class="t-high" id="t-qual"></span></li>
+                    <li><span class="t-label">Format:</span> <span id="t-fmt"></span></li>
+                </ul>
             </div>
 
             <a href="#" id="m-link" target="_blank" class="play-btn">
-                <i class="fa-solid fa-play"></i> Watch Now
+                <i class="fa-solid fa-play"></i> Watch Now on OTT
             </a>
 
-            <div class="section-title">Storyline</div>
-            <p class="text-block" id="m-plot"></p>
+            <div class="lbl">Storyline</div>
+            <p class="txt" id="m-plot"></p>
 
-            <div class="section-title">Critic Review</div>
-            <p class="text-block" id="m-review" style="font-style: italic; color: #a3a3a3; border-left: 1px solid #333; padding-left: 10px;">
-            </p>
+            <div class="lbl">Critic Review</div>
+            <p class="txt" id="m-review" style="font-style: italic; color: #a1a1a1; border-left: 1px solid #333; padding-left: 10px;"></p>
 
-            <div class="section-title">Movie Info</div>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="i-label">Director</span>
-                    <span class="i-val" id="d-dir"></span>
-                </div>
-                <div class="info-item">
-                    <span class="i-label">Audio Languages</span>
-                    <span class="i-val" id="d-audio"></span>
-                </div>
-                <div class="info-item">
-                    <span class="i-label">Subtitles</span>
-                    <span class="i-val" id="d-sub"></span>
-                </div>
-                <div class="info-item">
-                    <span class="i-label">Genre</span>
-                    <span class="i-val" id="d-genre"></span>
-                </div>
-                <div class="info-item">
-                    <span class="i-label">Studio/Network</span>
-                    <span class="i-val" id="d-studio"></span>
-                </div>
-                <div class="info-item">
-                    <span class="i-label">Content Rating</span>
-                    <span class="i-val" id="d-cert"></span>
-                </div>
-            </div>
-
-            <div class="section-title">Cast</div>
-            <div class="cast-scroll" id="cast-box"></div>
-
+            <div class="lbl">Top Cast</div>
+            <div class="cast-row" id="castBox"></div>
         </div>
     </div>
 
     <script>
-        // --- 1. PREMIUM DATA STRUCTURE ---
+        // --- DATA ENGINE ---
         const movies = [
             {
-                id: 1,
+                id: 1, type: 'top',
                 title: "Stranger Things",
+                rate: "8.7", 
                 poster: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
-                // Official Trailer ID
                 trailer: "b9EkMc79ZSU",
-                link: "https://www.netflix.com/title/80057281",
+                link: "https://www.netflix.com",
                 
-                // Header Tech Specs
-                year: "2016-25",
-                age: "16+",
-                res: "4K UHD",
-                hdr: "Dolby Vision",
-                audioBad: "Dolby Atmos",
-                match: "99% Match",
+                // Technical Specs (Download Site Style)
+                t_name: "Stranger Things (Season 1-4)",
+                t_lang: "Dual Audio [Hindi + English]",
+                t_year: "2016-2025",
+                t_size: "800MB / 2.4GB (Per Episode)",
+                t_qual: "4K Ultra HD HDR / 1080p 10Bit",
+                t_fmt: "MKV (HEVC)",
 
-                // Deep Details
-                dir: "The Duffer Brothers",
-                audioLang: "English, Hindi, Tamil, Telugu",
-                subs: "English (CC), Hindi",
-                genre: "Sci-Fi • Horror • Drama",
-                studio: "Netflix Original",
-                cert: "Mature (Violence, Fear)",
-
-                // Separate Sections
-                plot: "In a small town where everyone knows everyone, a peculiar incident starts a chain of events that leads to the disappearance of a child, which begins to tear at the fabric of an otherwise peaceful community. Dark government agencies and seemingly malevolent supernatural forces converge on the town.",
+                plot: "In a small town where everyone knows everyone, a peculiar incident starts a chain of events that leads to the disappearance of a child. Dark government agencies and seemingly malevolent supernatural forces converge on the town, while a few locals begin to understand that there's more going on than meets the eye.",
                 
-                review: "Stranger Things is a masterpiece of nostalgia. It perfectly blends the innocence of childhood friendship with genuine horror. Season 4 raised the stakes with a cinematic budget, introducing Vecna as a terrifying villain. A must-watch for anyone who loves 80s vibes.",
-
+                review: "Stranger Things is a masterpiece of nostalgia. It blends 80s vibes with genuine horror. Season 4 raised the stakes with a cinematic budget and introduced Vecna, the most terrifying villain yet. The VFX is top-notch.",
+                
                 cast: [
-                    {n: "Millie Brown", i: "https://image.tmdb.org/t/p/w200/26XbdT7sWpPZcNB0p5R15L9Z9d5.jpg"},
-                    {n: "Finn Wolfhard", i: "https://image.tmdb.org/t/p/w200/j6i5g31E3D3k7J5z7qX5x6k8.jpg"},
-                    {n: "Winona Ryder", i: "https://image.tmdb.org/t/p/w200/5d4g3fX7a2a1b0c9e8d7f6.jpg"}
+                    {n:"Millie Bobby Brown", i:"https://image.tmdb.org/t/p/w200/26XbdT7sWpPZcNB0p5R15L9Z9d5.jpg"},
+                    {n:"Finn Wolfhard", i:"https://image.tmdb.org/t/p/w200/j6i5g31E3D3k7J5z7qX5x6k8.jpg"},
+                    {n:"Winona Ryder", i:"https://image.tmdb.org/t/p/w200/5d4g3fX7a2a1b0c9e8d7f6.jpg"}
                 ]
             },
             {
-                id: 2,
+                id: 2, type: 'top',
                 title: "Raanjhanaa",
+                rate: "7.6",
                 poster: "https://image.tmdb.org/t/p/w500/g9hw87LwM0Jk5L9rWf9xX8y9.jpg",
-                trailer: "ER9I2oJ-oPk", // Using Title track as trailer is blocked sometimes, or official link
+                trailer: "ER9I2oJ-oPk",
                 link: "https://www.primevideo.com",
                 
-                year: "2013",
-                age: "U/A",
-                res: "FHD",
-                hdr: "HDR",
-                audioBad: "5.1",
-                match: "95% Match",
+                t_name: "Raanjhanaa (2013)",
+                t_lang: "Hindi (Original Audio)",
+                t_year: "2013",
+                t_size: "1.2GB / 3.5GB",
+                t_qual: "1080p FHD Bluray Remux",
+                t_fmt: "MKV (x264)",
 
-                dir: "Aanand L. Rai",
-                audioLang: "Hindi (Original)",
-                subs: "English",
-                genre: "Romance • Drama",
-                studio: "Eros International",
-                cert: "U/A (Emotional)",
-
-                plot: "Kundan, a Hindu pundit's son, discovers that his childhood sweetheart Zoya loves city-bred Akram. He persists in winning her heart, leading to a journey of obsession, politics, and heartbreak in the streets of Banaras.",
+                plot: "Kundan, the son of a Hindu pundit, discovers that his childhood sweetheart Zoya loves city-bred Akram. He persists in winning her heart, leading to a journey of obsession, politics, and heartbreak in the streets of Banaras.",
+                review: "Dhanush's performance is raw and unforgettable. A.R. Rahman's music brings life to the streets of Banaras. A tragic love story that stays with you forever.",
                 
-                review: "A cult classic. Dhanush's debut in Bollywood is explosive. He captures the madness of one-sided love perfectly. A.R. Rahman's music is the soul of this film. The climax is controversial but unforgettable.",
-
                 cast: [
-                    {n: "Dhanush", i: "https://image.tmdb.org/t/p/w200/e1Dhanush.jpg"}, // Placeholder logic used below
-                    {n: "Sonam Kapoor", i: "https://image.tmdb.org/t/p/w200/69Sonam.jpg"},
-                    {n: "Abhay Deol", i: "https://image.tmdb.org/t/p/w200/26Abhay.jpg"}
+                    {n:"Dhanush", i:"https://image.tmdb.org/t/p/w200/e1Dhanush.jpg", alt:"https://upload.wikimedia.org/wikipedia/commons/e/e1/Dhanush_at_The_Gray_Man_premiere.jpg"}, 
+                    {n:"Sonam Kapoor", i:"https://image.tmdb.org/t/p/w200/69Sonam.jpg", alt:"https://upload.wikimedia.org/wikipedia/commons/6/69/Sonam_Kapoor_promoting_Neerja.jpg"},
+                    {n:"Abhay Deol", i:"https://image.tmdb.org/t/p/w200/26Abhay.jpg", alt:"https://upload.wikimedia.org/wikipedia/commons/2/26/Abhay_Deol_at_the_premiere_of_Happy_Bhag_Jayegi.jpg"}
                 ]
             },
             {
-                id: 3,
-                title: "Pushpa 2: The Rule",
+                id: 3, type: 'fan',
+                title: "Your Name",
+                rate: "8.4",
+                poster: "https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg",
+                trailer: "xU47nhruN-Q",
+                link: "https://www.netflix.com",
+
+                t_name: "Kimi no Na wa (Your Name)",
+                t_lang: "Japanese + English + Hindi",
+                t_year: "2016",
+                t_size: "900MB / 2.1GB",
+                t_qual: "4K Ultra HD 10bit HDR",
+                t_fmt: "MKV (Multi-Audio)",
+
+                plot: "Two strangers find themselves linked in a bizarre way. When a connection forms, will distance be the only thing to keep them apart? A visual masterpiece about time, destiny, and memory.",
+                review: "The gold standard of modern anime. The animation is breathtaking. The comet scene coupled with RADWIMPS music is pure art. A must-watch emotional journey.",
+
+                cast: [
+                    {n:"Ryunosuke", i:"https://upload.wikimedia.org/wikipedia/commons/9/90/Ryunosuke_Kamiki_at_Opening_Ceremony_of_the_Tokyo_International_Film_Festival_2017_%2826330761629%29.jpg"},
+                    {n:"Mone K.", i:"https://upload.wikimedia.org/wikipedia/commons/5/53/Mone_Kamishiraishi_at_Opening_Ceremony_of_the_Tokyo_International_Film_Festival_2019_%2849007466548%29.jpg"}
+                ]
+            },
+            {
+                id: 4, type: 'fan',
+                title: "Pushpa 2",
+                rate: "8.5",
                 poster: "https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHkjJDVEs59.jpg",
                 trailer: "gS81L3mK7u0",
                 link: "https://www.netflix.com",
-                
-                year: "2024",
-                age: "A",
-                res: "4K UHD",
-                hdr: "Dolby Vision",
-                audioBad: "Atmos",
-                match: "98% Match",
 
-                dir: "Sukumar",
-                audioLang: "Telugu, Hindi, Tamil, Mal, Kan",
-                subs: "English, Arabic, Hindi",
-                genre: "Action • Crime",
-                studio: "Mythri Movie Makers",
-                cert: "Adults (Violence)",
+                t_name: "Pushpa 2: The Rule",
+                t_lang: "Multi-Audio (Tel, Hin, Tam)",
+                t_year: "2024",
+                t_size: "1.5GB / 4.2GB",
+                t_qual: "4K WEB-DL Dolby Vision",
+                t_fmt: "MKV (E-AC3)",
 
-                plot: "The clash between Pushpa Raj and Bhanwar Singh Shekhawat continues. Pushpa has now established his rule over the red sandalwood smuggling syndicate, but his enemies are closing in. With higher stakes and louder action.",
-                
-                review: "Mass cinema at its peak. Allu Arjun's swag is unmatched. The scale is bigger than the first part. If you love Indian action movies, this is a festival.",
+                plot: "The clash between Pushpa Raj and Bhanwar Singh Shekhawat continues. Pushpa has now established his rule over the red sandalwood smuggling syndicate, but his enemies are closing in.",
+                review: "Mass cinema at its peak. Allu Arjun's swag is unmatched. The scale is bigger than the first part. Pure entertainment for action lovers.",
 
                 cast: [
-                    {n: "Allu Arjun", i: "https://image.tmdb.org/t/p/w200/Allu.jpg"},
-                    {n: "Fahadh Faasil", i: "https://image.tmdb.org/t/p/w200/Fahadh.jpg"},
-                    {n: "Rashmika", i: "https://image.tmdb.org/t/p/w200/Rash.jpg"}
+                    {n:"Allu Arjun", i:"https://image.tmdb.org/t/p/w200/fW37GBK5PJnxGYdwHhTgKY8p6A9.jpg"},
+                    {n:"Rashmika", i:"https://image.tmdb.org/t/p/w200/pE1PqCjT77C1K7S840C1Z60g5.jpg"},
+                    {n:"Fahadh Faasil", i:"https://image.tmdb.org/t/p/w200/n5O3r4h5gM1.jpg"}
+                ]
+            },
+            {
+                id: 5, type: 'top',
+                title: "Squid Game",
+                rate: "8.0",
+                poster: "https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg",
+                trailer: "oqxAJKy0ii4",
+                link: "https://www.netflix.com",
+
+                t_name: "Squid Game (Season 1)",
+                t_lang: "Dual Audio (Hindi + English)",
+                t_year: "2021",
+                t_size: "600MB / 1.5GB",
+                t_qual: "4K Dolby Vision",
+                t_fmt: "MKV",
+
+                plot: "Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes.",
+                review: "A global phenomenon. It exposes the dark side of capitalism with brutal violence and deep emotion. The 'Red Light, Green Light' scene is iconic.",
+
+                cast: [
+                    {n:"Lee Jung-jae", i:"https://image.tmdb.org/t/p/w200/sLw07E4Y9a0y52N04Zf9W3z2.jpg"},
+                    {n:"Park Hae-soo", i:"https://image.tmdb.org/t/p/w200/lJ9qg6xQ5Q5x5Q5.jpg"}
+                ]
+            },
+            {
+                id: 6, type: 'fan',
+                title: "12th Fail",
+                rate: "9.2",
+                poster: "https://image.tmdb.org/t/p/w500/yh3r2mU5k7a5k8k5.jpg",
+                trailer: "WeRPSH2xZro",
+                link: "https://www.hotstar.com",
+
+                t_name: "12th Fail (2023)",
+                t_lang: "Hindi",
+                t_year: "2023",
+                t_size: "1.1GB",
+                t_qual: "1080p WEB-DL",
+                t_fmt: "MP4",
+
+                plot: "Based on the true story of IPS officer Manoj Kumar Sharma. It showcases the relentless struggle of millions of students attempting the world's toughest competitive exam: UPSC.",
+                review: "The most inspiring movie of the year. Vikrant Massey delivers the performance of a lifetime. It’s not just about passing an exam, it’s about honesty and resilience.",
+
+                cast: [
+                    {n:"Vikrant Massey", i:"https://image.tmdb.org/t/p/w200/8q9q9q9.jpg"},
+                    {n:"Medha Shankar", i:"https://image.tmdb.org/t/p/w200/7r7r7r7.jpg"}
                 ]
             }
         ];
 
-        // --- 2. RENDER GRID ---
-        const grid = document.getElementById('mainGrid');
-        
+        // --- RENDER LOGIC ---
+        const r1 = document.getElementById('row1');
+        const r2 = document.getElementById('row2');
+
         movies.forEach(m => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.onclick = () => openModal(m.id);
-            card.innerHTML = `
-                <span class="quality-tag">${m.res}</span>
-                <img src="${m.poster}" class="poster" onerror="this.src='https://via.placeholder.com/150x220?text=Poster'">
-                <div class="card-details">
-                    <div class="c-title">${m.title}</div>
-                    <div class="c-meta">
-                        <span>${m.year}</span>
-                        <span>${m.genre.split('•')[0]}</span>
+            // Quality Tag Logic
+            const qualTag = m.t_qual.includes('4K') ? '4K HDR' : 'FHD';
+            
+            const card = `
+                <div class="card" onclick="openM(${m.id})">
+                    <span class="quality-badge">${qualTag}</span>
+                    <img src="${m.poster}" class="poster-img" onerror="this.src='https://via.placeholder.com/160x240?text=Poster'">
+                    <div class="card-body">
+                        <div class="rating"><i class="fa-solid fa-star"></i> ${m.rate}</div>
+                        <div class="m-name">${m.title}</div>
+                        <div class="btn-watch-opt">Watch options</div>
+                        <div class="btn-trailer" onclick="event.stopPropagation(); openM(${m.id})">
+                            <i class="fa-solid fa-play"></i> Trailer
+                        </div>
                     </div>
                 </div>
             `;
-            grid.appendChild(card);
+            if(m.type==='top') r1.innerHTML += card;
+            else r2.innerHTML += card;
         });
 
-        // --- 3. MODAL LOGIC ---
+        // --- MODAL LOGIC ---
         const modal = document.getElementById('modal');
-        const vBox = document.getElementById('vidPlayer');
+        const vBox = document.getElementById('vidBox');
 
-        function openModal(id) {
+        function openM(id) {
             const m = movies.find(x => x.id === id);
-            
-            // Header Info
+
+            // Basic Info
             document.getElementById('m-title').innerText = m.title;
-            document.getElementById('m-score').innerText = m.match;
-            document.getElementById('m-year').innerText = m.year;
-            document.getElementById('m-age').innerText = m.age;
-            document.getElementById('m-res').innerText = m.res;
-            document.getElementById('m-hdr').innerText = m.hdr;
-            document.getElementById('m-audio').innerText = m.audioBad;
-            
             document.getElementById('m-link').href = m.link;
 
-            // Content Filling
+            // Fill Technical Specs (Download Site Style)
+            document.getElementById('t-name').innerText = m.t_name;
+            document.getElementById('t-lang').innerText = m.t_lang;
+            document.getElementById('t-year').innerText = m.t_year;
+            document.getElementById('t-size').innerText = m.t_size;
+            document.getElementById('t-qual').innerText = m.t_qual;
+            document.getElementById('t-fmt').innerText = m.t_fmt;
+
+            // Text
             document.getElementById('m-plot').innerText = m.plot;
             document.getElementById('m-review').innerText = m.review;
 
-            // A-Z Details
-            document.getElementById('d-dir').innerText = m.dir;
-            document.getElementById('d-audio').innerText = m.audioLang;
-            document.getElementById('d-sub').innerText = m.subs;
-            document.getElementById('d-genre').innerText = m.genre;
-            document.getElementById('d-studio').innerText = m.studio;
-            document.getElementById('d-cert').innerText = m.cert;
-
-            // Cast Loop
-            const cBox = document.getElementById('cast-box');
+            // Cast Loop (With Error Handling for images)
+            const cBox = document.getElementById('castBox');
             cBox.innerHTML = "";
             m.cast.forEach(c => {
+                // Try primary image, if fails fallback or icon
+                let imgHtml = `<img src="${c.i}" class="cast-i" onerror="this.src='${c.alt || 'https://via.placeholder.com/70?text=User'}'">`;
+                
                 cBox.innerHTML += `
-                    <div class="cast-card">
-                        <div class="cast-img" style="background: #333; display:flex; justify-content:center; align-items:center;">
-                            <i class="fa-solid fa-user" style="color:#666"></i>
-                        </div>
-                        <div class="cast-name">${c.n}</div>
+                    <div class="cast-c">
+                        ${imgHtml}
+                        <div class="cast-n">${c.n}</div>
                     </div>
                 `;
             });
 
-            // Video Player
+            // Video (Sticky & Auto)
             vBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${m.trailer}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen></iframe>`;
 
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            history.pushState({m:true}, null, "");
         }
 
         function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
             vBox.innerHTML = "";
+            if(history.state) history.back();
+        }
+
+        window.onpopstate = function() {
+            if(modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                vBox.innerHTML = "";
+            }
         }
     </script>
 </body>
