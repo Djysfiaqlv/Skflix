@@ -1,340 +1,414 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK FLIX - Ultimate</title>
+    <title>SK FLIX - Ultimate Pro Max</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. THEME & COLORS --- */
+        /* --- THEME --- */
         :root {
-            --bg: #000000; /* Deep Black Bg */
-            --card: #121212; /* Slightly lighter card */
-            --text: #ffffff;
-            --text-dim: #b3b3b3;
-            --accent: #F5C518; /* IMDb Yellow */
-            --red: #E50914; /* Netflix Red */
-            --green: #46d369; /* Quality Green */
-            --blue: #5799ef; /* Watch Link Blue */
+            --bg: #050505;
+            --card-bg: #141414;
+            --text: #e0e0e0;
+            --accent: #F5C518; /* Yellow */
+            --red: #E50914;
+            --blue: #5799ef;
+            --green: #46d369;
+            --music: #d62976; /* Pink for Music */
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 40px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
         ::-webkit-scrollbar { display: none; }
 
-        /* --- 2. HEADER --- */
+        /* --- HEADER --- */
         header {
-            padding: 15px 20px; background: rgba(18, 18, 18, 0.95); position: sticky; top: 0; z-index: 100;
+            padding: 15px 20px; background: rgba(0,0,0,0.95); position: sticky; top: 0; z-index: 100;
             display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
-            backdrop-filter: blur(10px);
         }
         .logo { font-size: 1.6rem; font-weight: 900; color: var(--red); letter-spacing: 1px; }
-        .logo span { color: var(--accent); }
+        .logo span { color: white; }
         .insta { color: white; font-size: 1.6rem; }
 
-        /* --- 3. HORIZONTAL SCROLL SECTIONS --- */
-        .sec-head {
-            padding: 25px 15px 10px; border-left: 4px solid var(--accent); margin-left: 15px; margin-top: 15px;
-        }
+        /* --- SECTIONS --- */
+        .sec-head { padding: 20px 15px 10px; border-left: 4px solid var(--accent); margin-left: 15px; margin-top: 15px; }
         .sec-title { font-size: 1.3rem; font-weight: 700; color: white; }
-        .sec-sub { font-size: 0.9rem; color: var(--text-dim); margin-top: 5px; }
-
-        .scroll-box {
-            display: flex; gap: 15px; overflow-x: auto; padding: 15px; scroll-behavior: smooth;
-        }
-
-        /* --- 4. CARD DESIGN --- */
-        .card {
-            min-width: 155px; max-width: 155px; background: var(--card);
-            border-radius: 8px; overflow: hidden; position: relative;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
+        .sec-sub { font-size: 0.9rem; color: #888; margin-top: 5px; }
         
-        /* Quality Tag (4K/FHD) */
-        .q-tag {
-            position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.8); 
-            color: var(--green); font-size: 0.65rem; padding: 3px 7px; 
-            border: 1px solid var(--green); border-radius: 4px; font-weight: 700; z-index: 2;
-        }
+        /* Music Style Headers */
+        .music-style { border-left-color: var(--music); }
+        .music-style .sec-title { color: var(--music); }
 
-        .poster { width: 100%; height: 230px; object-fit: cover; background: #222; }
-        
-        .card-body { padding: 12px; }
-        .rate { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-        .rate i { color: var(--accent); }
-        
-        .c-title { font-size: 1rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 12px; }
+        .scroll-box { display: flex; gap: 15px; overflow-x: auto; padding: 15px; scroll-behavior: smooth; }
 
-        .btn-opt {
-            background: #222; color: var(--blue); text-align: center; border: 1px solid #333;
-            padding: 10px 0; border-radius: 4px; font-size: 0.85rem; font-weight: 600; margin-bottom: 10px;
-        }
-        .btn-trail {
-            background: transparent; border: 1px solid #555; color: white;
-            padding: 8px 0; border-radius: 20px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 5px;
-        }
-
-        /* --- 5. MODAL (DETAILS POPUP) --- */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 2000; overflow-y: auto;
-        }
+        /* --- CARDS --- */
+        .card { background: var(--card-bg); border-radius: 8px; overflow: hidden; position: relative; min-width: 150px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .q-tag { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.85); color: var(--green); font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; border: 1px solid var(--green); }
+        .poster { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 10px; }
+        .c-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
         
-        /* Sticky Video */
+        .btn-watch { background: #222; color: var(--blue); width: 100%; padding: 8px; border-radius: 4px; text-align: center; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; }
+        .btn-trail { border: 1px solid #555; width: 100%; padding: 6px; border-radius: 20px; text-align: center; font-size: 0.8rem; display: flex; justify-content: center; gap: 5px; }
+
+        /* --- MODAL --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; overflow-y: auto; }
         .vid-box { position: sticky; top: 0; width: 100%; aspect-ratio: 16/9; background: black; z-index: 10; border-bottom: 1px solid #333; }
         .vid-box iframe { width: 100%; height: 100%; border: 0; }
 
-        .m-content { padding: 20px; }
-        
+        .content { padding: 20px; }
         .m-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .m-title { font-size: 2rem; font-weight: 700; line-height: 1.1; width: 85%; color: var(--accent); }
-        .m-close { font-size: 2rem; color: #fff; }
+        .m-title { font-size: 1.8rem; font-weight: 800; line-height: 1.1; color: var(--accent); width: 85%; }
+        .m-close { font-size: 2rem; color: #fff; cursor: pointer; }
 
-        /* TECHNICAL SPECS BOX (The "Download Site" Look) */
-        .tech-box {
-            background: #121212; border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 30px;
-            border-left: 4px solid var(--blue);
-        }
-        .tech-head { color: var(--blue); font-weight: 700; margin-bottom: 15px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
-        .tech-list { list-style: none; font-size: 0.95rem; line-height: 1.8; color: #ccc; }
-        .tech-list li { border-bottom: 1px solid #222; padding: 8px 0; display: flex; justify-content: space-between; }
-        .tech-list li:last-child { border-bottom: none; }
-        .t-label { color: white; font-weight: 700; }
-        .t-high { color: var(--green); font-weight: bold; text-align: right; }
-        .t-val { text-align: right; max-width: 60%; color: #aaa; font-weight: 500; }
+        /* SPECS TABLE */
+        .specs-box { background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-bottom: 30px; border-left: 4px solid var(--blue); }
+        .specs-head { background: #1a1a1a; padding: 10px 15px; font-weight: 700; color: var(--blue); border-bottom: 1px solid #333; text-transform: uppercase; }
+        .specs-row { display: flex; border-bottom: 1px solid #222; padding: 8px 15px; font-size: 0.9rem; }
+        .s-key { width: 35%; color: #888; font-weight: 600; }
+        .s-val { width: 65%; color: #ddd; text-align: right; }
 
-        /* Watch Button */
-        .play-btn {
-            display: block; width: 100%; background: var(--red); color: white;
-            text-align: center; font-weight: 900; padding: 16px; border-radius: 6px;
-            font-size: 1.2rem; text-decoration: none; margin-bottom: 30px;
-        }
+        /* LONG REVIEW */
+        .long-review { margin-bottom: 30px; }
+        .review-title { font-size: 1.3rem; color: white; font-weight: 700; border-left: 5px solid var(--red); padding-left: 15px; margin-bottom: 15px; }
+        .review-text { color: #ccc; line-height: 1.8; font-size: 0.95rem; text-align: justify; white-space: pre-line; }
 
-        /* Sections (Story/Review) */
-        .lbl { font-size: 1.2rem; color: white; font-weight: 700; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
-        .txt { color: #ddd; line-height: 1.6; font-size: 1rem; margin-bottom: 30px; text-align: justify; }
+        /* SONGS INSIDE MOVIE */
+        .song-card { display: flex; align-items: center; background: #1a1a1a; padding: 10px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #333; cursor: pointer; transition: 0.2s; }
+        .song-card:active { transform: scale(0.98); background: #222; }
+        .s-icon { width: 40px; height: 40px; background: var(--music); color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 15px; font-size: 1.2rem; }
+        .s-info { flex: 1; }
+        .s-name { font-weight: 600; color: white; font-size: 1rem; }
+        .s-art { color: #888; font-size: 0.8rem; }
 
-        /* Cast */
-        .cast-row { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; }
-        .cast-c { text-align: center; min-width: 85px; }
-        .cast-i { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; border: 2px solid #333; background: #222; }
-        .cast-n { font-size: 0.8rem; color: #ccc; font-weight: 500; }
-
-        /* Footer */
-        footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; margin-top: 30px; color: #666; font-size: 0.9rem; }
-        .dev { color: var(--accent); font-weight: bold; }
-
+        /* PERSONAL VERDICT */
+        .verdict-box { background: #1a1a1a; border: 1px solid var(--accent); border-radius: 8px; padding: 20px; margin-top: 30px; margin-bottom: 40px; position: relative; }
+        .v-badge { position: absolute; top: -12px; right: 20px; background: var(--accent); color: black; padding: 5px 12px; border-radius: 20px; font-weight: 900; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(245, 197, 24, 0.4); }
+        .v-head { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+        .v-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; margin-bottom: 10px; }
+        
+        .play-main { display: block; width: 100%; padding: 15px; background: var(--red); color: white; text-align: center; font-weight: 900; font-size: 1.1rem; text-decoration: none; border-radius: 6px; margin: 30px 0; }
+        
+        footer { text-align: center; padding: 40px 0; border-top: 1px solid #222; margin-top: 20px; color: #666; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">SK <span>FLIX</span></div>
-        <a href="https://www.instagram.com/shoav_khan_00" target="_blank" class="insta">
-            <i class="fa-brands fa-instagram"></i>
-        </a>
+        <a href="https://www.instagram.com/shoav_khan_00" target="_blank" class="insta"><i class="fa-brands fa-instagram"></i></a>
     </header>
 
     <div class="sec-head">
-        <div class="sec-title">Top Picks ></div>
-        <div class="sec-sub">TV shows and movies just for you</div>
+        <div class="sec-title">Top Picks</div>
+        <div class="sec-sub">Curated for you</div>
     </div>
-    <div class="scroll-box" id="row1"></div>
+    <div class="scroll-box" id="movie-row"></div>
 
     <div class="sec-head">
-        <div class="sec-title">Fan Favorites ></div>
-        <div class="sec-sub">Most loved by audience</div>
+        <div class="sec-title">Fan Favorites</div>
+        <div class="sec-sub">Trending Now</div>
     </div>
-    <div class="scroll-box" id="row2"></div>
+    <div class="scroll-box" id="fav-row"></div>
 
-    <footer>
-        © 2026 SK FLIX Ultimate.<br>
-        Developed by <span class="dev">Shoav Khan</span>
-    </footer>
+    <div class="sec-head music-style">
+        <div class="sec-title">Trending Hits</div>
+        <div class="sec-sub">Featured Tracks</div>
+    </div>
+    <div class="scroll-box" id="music-row"></div>
 
     <div id="modal" class="modal">
-        <div class="vid-box" id="vidBox"></div>
+        <div class="vid-box" id="vidPlayer"></div>
         
-        <div class="m-content">
+        <div class="content">
             <div class="m-head">
                 <h1 class="m-title" id="m-title">Title</h1>
                 <i class="fa-solid fa-xmark m-close" onclick="closeModal()"></i>
             </div>
 
-            <div class="tech-box">
-                <div class="tech-head">Technical Specifications</div>
-                <ul class="tech-list">
-                    <li><span class="t-label">Full Name</span> <span class="t-val" id="t-name"></span></li>
-                    <li><span class="t-label">Language</span> <span class="t-val" id="t-lang"></span></li>
-                    <li><span class="t-label">Release</span> <span class="t-val" id="t-year"></span></li>
-                    <li><span class="t-label">Size</span> <span class="t-val" id="t-size"></span></li>
-                    <li><span class="t-label">Quality</span> <span class="t-high" id="t-qual"></span></li>
-                    <li><span class="t-label">Format</span> <span class="t-val" id="t-fmt"></span></li>
-                </ul>
+            <div class="specs-box">
+                <div class="specs-head">Technical Specifications</div>
+                <div id="tech-rows"></div>
             </div>
 
-            <a href="#" id="m-link" target="_blank" class="play-btn">
-                <i class="fa-solid fa-play"></i> Watch on OTT Now
-            </a>
+            <div class="long-review">
+                <div class="review-title">In-Depth Review</div>
+                <div class="review-text" id="m-review"></div>
+            </div>
 
-            <div class="lbl">Storyline</div>
-            <p class="txt" id="m-plot"></p>
+            <div class="long-review" id="songs-section">
+                <div class="review-title" style="border-color:var(--music)">Top 3 Hit Songs</div>
+                <div style="font-size:0.85rem; color:#888; margin-bottom:10px;">Click to play video above ▲</div>
+                <div id="songs-list"></div>
+            </div>
 
-            <div class="lbl">Critic Review</div>
-            <p class="txt" id="m-review" style="font-style: italic; color: #bbb; border-left: 2px solid #333; padding-left: 15px;"></p>
+            <div class="verdict-box" id="verdict-box">
+                <div class="v-badge" id="p-rate">9.5/10</div>
+                <div class="v-head">Why You Should Watch?</div>
+                <p class="v-text" id="p-why"></p>
+                <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
+                    <div style="color:var(--green); font-size:0.9rem; margin-bottom:5px;">✅ <span id="p-good"></span></div>
+                    <div style="color:var(--red); font-size:0.9rem;">❌ <span id="p-bad"></span></div>
+                </div>
+            </div>
 
-            <div class="lbl">Top Cast</div>
-            <div class="cast-row" id="castBox"></div>
+            <a href="#" id="m-link" class="play-main">Watch Full on OTT</a>
         </div>
     </div>
 
     <script>
-        // --- ONLY 2 MOVIES INCLUDED AS REQUESTED ---
-        const movies = [
+        // --- DATA ---
+        const content = [
+            // === MOVIES ===
             {
-                id: 1, type: 'top', // 'top' means Top Picks row
+                id: 1, type: "top", // Top Picks Row
                 title: "Stranger Things",
-                rate: "8.7", 
                 poster: "https://i.ibb.co/LXLVpZJ1/11ee9ce236f8781d441082b4ed14308b.jpg",
-                trailer: "b9EkMc79ZSU", // YouTube ID
-                link: "https://www.netflix.com", // OTT Link
+                trailer: "b9EkMc79ZSU",
+                link: "https://www.netflix.com",
+                qual: "4K HDR",
                 
-                // Tech Specs (Download Site Style)
-                t_name: "Stranger Things (Season 1-4)",
-                t_lang: "Dual Audio [Hindi + English]",
-                t_year: "2016-2025",
-                t_size: "2.4GB (Per Episode)",
-                t_qual: "4K Ultra HD HDR", // Shows on card and in box
-                t_fmt: "MKV (HEVC)",
+                details: [
+                    ["Full Name", "Stranger Things (S1-S4)"],
+                    ["Language", "Dual Audio [Hindi+Eng]"],
+                    ["Resolution", "4K Ultra HD (2160p)"],
+                    ["Audio Codec", "Dolby Atmos / E-AC3"],
+                    ["Size", "2.8 GB Per Episode"],
+                    ["Format", "MKV (HEVC 10bit)"],
+                    ["Source", "Netflix WEB-DL"],
+                    ["Subtitle", "English, Hindi (Muxed)"]
+                ],
 
-                plot: "In a small town where everyone knows everyone, a peculiar incident starts a chain of events that leads to the disappearance of a young boy. Dark government agencies and seemingly malevolent supernatural forces converge on the town, while a few locals begin to understand that there's more going on than meets the eye.",
-                
-                // FULL REVIEW ADDED
-                review: "Stranger Things is a modern masterpiece of nostalgia. It perfectly blends the innocence of 80s childhood adventure films with genuine sci-fi horror. The Duffer Brothers have created a rich, detailed world centered around the lovable kids of Hawkins. Season 4 raised the stakes brilliantly with cinematic production value, longer episodes, and the introduction of Vecna, perhaps the series' most terrifying villain yet. The performances, especially by Millie Bobby Brown and Sadie Sink, are stellar. It's a gripping, emotional, and visually stunning ride.",
-                
-                cast: [
-                    {n:"Millie Bobby Brown", i:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Millie_Bobby_Brown_at_Phoenix_Comicon_2017_%28cropped%29.jpg/220px-Millie_Bobby_Brown_at_Phoenix_Comicon_2017_%28cropped%29.jpg"},
-                    {n:"Finn Wolfhard", i:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Finn_Wolfhard_at_2017_Comic-Con_%28cropped%29.jpg/220px-Finn_Wolfhard_at_2017_Comic-Con_%28cropped%29.jpg"},
-                    {n:"Winona Ryder", i:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Winona_Ryder_2010_TIFF.jpg/220px-Winona_Ryder_2010_TIFF.jpg"}
-                ]
+                review: `**Introduction to Hawkins**
+Stranger Things isn't just a show; it is a global cultural phenomenon. Created by the Duffer Brothers, this series masterfully combines the innocence of 1980s coming-of-age films with the terrifying suspense of sci-fi horror. From the very first episode, the synth-heavy soundtrack transports you back in time.
+
+**The Story So Far**
+The saga begins in the fictional town of Hawkins, Indiana, with the sudden disappearance of Will Byers. What starts as a simple missing person case quickly unravels into a government conspiracy involving secret laboratories and portals to another dimension known as 'The Upside Down'. At the center of it all is Eleven, a young girl with psychokinetic powers who escaped the lab.
+
+**Why It Works**
+The strength of Stranger Things lies in its characters. The chemistry between Mike, Dustin, Lucas, and Will is authentic and heartwarming. Steve Harrington’s transformation from a high school bully to a protective 'mom' figure is one of the best character arcs in TV history. Season 4 raised the stakes significantly by introducing Vecna, a villain with a personal connection to the heroes, making the horror feel more psychological and intense.`,
+
+                songs: [
+                    { t: "Running Up That Hill", a: "Kate Bush", v: "wp43OdtAAkM" },
+                    { t: "Master of Puppets", a: "Metallica", v: "S9-D3IVWuyY" },
+                    { t: "Separate Ways", a: "Journey", v: "4HkOme2cQYI" }
+                ],
+
+                personal: {
+                    rate: "9.5/10",
+                    why: "You should watch this for the pure nostalgia trip and the incredible bond between the friends. It’s perfect if you like 'The Goonies' mixed with 'Alien'.",
+                    good: "Steve & Dustin's Duo, 80s Music, Cinematic Horror",
+                    bad: "Episodes in Season 4 are very long (Movie length)"
+                }
             },
             {
-                id: 2, type: 'fan', // 'fan' means Fan Favorites row
+                id: 2, type: "fan", // Fan Favorites Row
                 title: "Raanjhanaa",
-                rate: "7.6",
                 poster: "https://i.ibb.co/Y7j7KRRt/96ea5411a3b23a2e9cb6ff643dda4594.jpg",
-                trailer: "os61rWd6-54", // Using Title Track because official trailer gets blocked on mobile
+                trailer: "os61rWd6-54",
                 link: "https://www.primevideo.com",
-                
-                // Tech Specs
-                t_name: "Raanjhanaa (2013)",
-                t_lang: "Hindi (Original Audio)",
-                t_year: "2013",
-                t_size: "3.5GB",
-                t_qual: "1080p FHD Bluray",
-                t_fmt: "MKV (x264)",
+                qual: "FHD Bluray",
 
-                plot: "Kundan, the son of a Hindu pundit, discovers that his childhood sweetheart Zoya loves city-bred Akram. He persists in winning her heart, leading to a tragic journey of obsession, politics, and heartbreak set against the vibrant backdrop of Banaras.",
-                
-                // FULL REVIEW ADDED
-                review: "Aanand L. Rai's Raanjhanaa is a vibrant yet tragic exploration of obsessive love. Dhanush makes a sensational Bollywood debut; his raw energy and vulnerability as Kundan make you root for him despite his flaws, capturing the madness of one-sided love perfectly. A.R. Rahman's transcendent score is the heartbeat of the film, elevating every scene. While the second half gets muddied with political subplots, the emotional climax delivers a gut punch that stays with you long after the credits roll. A cult classic.",
-                
-                cast: [
-                    {n:"Dhanush", i:"https://upload.wikimedia.org/wikipedia/commons/e/e1/Dhanush_at_The_Gray_Man_premiere.jpg"}, 
-                    {n:"Sonam Kapoor", i:"https://upload.wikimedia.org/wikipedia/commons/6/69/Sonam_Kapoor_promoting_Neerja.jpg"},
-                    {n:"Abhay Deol", i:"https://upload.wikimedia.org/wikipedia/commons/2/26/Abhay_Deol_at_the_premiere_of_Happy_Bhag_Jayegi.jpg"}
-                ]
+                details: [
+                    ["Full Name", "Raanjhanaa (2013)"],
+                    ["Language", "Hindi (Original Audio)"],
+                    ["Resolution", "1080p Full HD"],
+                    ["Audio Codec", "DTS-HD Master Audio"],
+                    ["Size", "12.4 GB (Remux)"],
+                    ["Format", "MKV (AVC)"],
+                    ["Source", "Retail Bluray Disc"],
+                    ["Subtitle", "English"]
+                ],
+
+                review: `**A Tale of Obsession**
+Directed by Aanand L. Rai, 'Raanjhanaa' is not your typical Bollywood romance. It is raw, messy, and deeply emotional. Set against the vibrant and chaotic backdrop of Banaras, the film tells the story of Kundan, a Tamil Brahmin boy who falls hopelessly in love with Zoya, a Muslim girl, from the moment he sees her praying.
+
+**Performance Powerhouse**
+This film marked the Bollywood debut of South superstar Dhanush, and what a debut it was! He brings an infectious energy to the screen. His dialogue delivery, his smile, and his breakdown scenes are pitch-perfect. You root for him despite his flawed, stalker-like tendencies because his love feels so innocent and destructive at the same time. Sonam Kapoor delivers one of her career-best performances.
+
+**Musical Masterpiece**
+A.R. Rahman’s soundtrack is the soul of this film. Every song advances the story. 'Tum Tak' captures the devotion of love, while the title track captures the madness.`,
+
+                songs: [
+                    { t: "Raanjhanaa (Title)", a: "Jaswinder Singh", v: "os61rWd6-54" },
+                    { t: "Tum Tak", a: "Javed Ali", v: "k422M879bwc" },
+                    { t: "Banarasiya", a: "Shreya Ghoshal", v: "5j1jD6s8A3k" }
+                ],
+
+                personal: {
+                    rate: "8.8/10",
+                    why: "Watch it for Dhanush's raw acting and A.R. Rahman's magical music. It’s an emotional rollercoaster.",
+                    good: "Unforgettable Music, Dhanush's Acting, Climax",
+                    bad: "Glorifies stalking in the first half"
+                }
+            },
+
+            // === SONGS (NEW SECTION KE LIYE DATA) ===
+            {
+                id: 101, type: "song", // Trending Hits Row
+                title: "Tum Tak",
+                poster: "https://i.scdn.co/image/ab67616d0000b273b1373587b640d244837332c6",
+                trailer: "k422M879bwc",
+                link: "https://open.spotify.com",
+                qual: "320kbps",
+
+                details: [
+                    ["Format", "FLAC / MP3"],
+                    ["Bitrate", "320 kbps (High Quality)"],
+                    ["Duration", "4:50"],
+                    ["Composer", "A.R. Rahman"],
+                    ["Label", "Eros Music"]
+                ],
+                review: `**Song Review: Tum Tak**
+"Tum Tak" is the soul of Raanjhanaa. Composed by the maestro A.R. Rahman and sung by Javed Ali, this song perfectly captures the essence of devotion. The use of Shehnai combined with modern beats creates a spiritual atmosphere. It depicts Kundan's journey from childhood to adulthood, solely focused on Zoya. A masterpiece of composition.`,
+
+                songs: [], // Song ke andar aur songs nahi honge
+                personal: {
+                    rate: "10/10",
+                    why: "One of the most soothing romantic tracks ever made.",
+                    good: "Javed Ali's Voice, Shehnai Use",
+                    bad: "None"
+                }
+            },
+            {
+                id: 102, type: "song",
+                title: "Pushpa Pushpa",
+                poster: "https://i.scdn.co/image/ab67616d0000b273397984489e229384768393e9",
+                trailer: "tOM-nwpkcRw",
+                link: "https://open.spotify.com",
+                qual: "Dolby Audio",
+
+                details: [
+                    ["Format", "Dolby Digital"],
+                    ["Bitrate", "320 kbps"],
+                    ["Duration", "4:15"],
+                    ["Composer", "Devi Sri Prasad (DSP)"],
+                    ["Label", "T-Series"]
+                ],
+                review: `**Song Review: Pushpa Pushpa**
+The title track of Pushpa 2 is an absolute banger. DSP brings his signature energetic beats that force you to dance. The chant "Pushpa Pushpa" is addictive. Visually, Allu Arjun's swag takes it to another level.`,
+
+                songs: [],
+                personal: {
+                    rate: "9/10",
+                    why: "Instant energy booster. Perfect for gym or parties.",
+                    good: "High Energy, Addictive Beats",
+                    bad: "Lyrics are repetitive"
+                }
             }
-            // --- ADD MORE MOVIES HERE LATER ---
         ];
 
         // --- RENDER LOGIC ---
-        const r1 = document.getElementById('row1');
-        const r2 = document.getElementById('row2');
+        const r1 = document.getElementById('movie-row');
+        const r2 = document.getElementById('fav-row');
+        const r3 = document.getElementById('music-row'); // New Row
 
-        movies.forEach(m => {
-            // Determine tag based on quality data
-            const qualTag = m.t_qual.includes('4K') ? '4K HDR' : (m.t_qual.includes('1080p') ? 'FHD' : 'HD');
+        content.forEach(m => {
+            const isSong = m.type === "song";
+            // Different colors for song cards
+            const qColor = isSong ? "var(--music)" : "var(--green)";
+            const btnText = isSong ? "Listen Now" : "Watch Options";
+            const btnColor = isSong ? "var(--music)" : "var(--blue)";
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => openModal(m.id);
+            card.innerHTML = `
+                <span class="q-tag" style="color:${qColor}; border-color:${qColor}">${m.qual}</span>
+                <img src="${m.poster}" class="poster">
+                <div class="card-body">
+                    <div class="c-title">${m.title}</div>
+                    <div class="btn-watch" style="color:${btnColor}">${btnText}</div>
+                    <div class="btn-trail"><i class="fa-solid fa-play"></i> ${isSong ? "Play Video" : "Trailer"}</div>
+                </div>`;
             
-            const card = `
-                <div class="card" onclick="openM(${m.id})">
-                    <span class="q-tag">${qualTag}</span>
-                    <img src="${m.poster}" class="poster" onerror="this.src='https://via.placeholder.com/160x240?text=Poster'">
-                    <div class="card-body">
-                        <div class="rate"><i class="fa-solid fa-star"></i> ${m.rate}</div>
-                        <div class="c-title">${m.title}</div>
-                        <div class="btn-opt">Watch options</div>
-                        <div class="btn-trail" onclick="event.stopPropagation(); openM(${m.id})">
-                            <i class="fa-solid fa-play"></i> Trailer
-                        </div>
-                    </div>
-                </div>
-            `;
-            if(m.type==='top') r1.innerHTML += card;
-            else r2.innerHTML += card;
+            if(m.type === 'top') r1.appendChild(card);
+            else if(m.type === 'fan') r2.appendChild(card);
+            else if(m.type === 'song') r3.appendChild(card); // Add to Music Row
         });
 
         // --- MODAL LOGIC ---
         const modal = document.getElementById('modal');
-        const vBox = document.getElementById('vidBox');
+        const vidBox = document.getElementById('vidPlayer');
 
-        function openM(id) {
-            const m = movies.find(x => x.id === id);
+        function openModal(id) {
+            const m = content.find(x => x.id === id);
 
-            // Header & Link
             document.getElementById('m-title').innerText = m.title;
-            document.getElementById('m-link').href = m.link;
+            const btn = document.getElementById('m-link');
+            btn.href = m.link;
+            // Button adapts based on type
+            btn.innerHTML = m.type === "song" ? "Listen on Spotify" : "Watch Full on OTT";
+            btn.style.background = m.type === "song" ? "var(--music)" : "var(--red)";
 
-            // Fill Tech Specs Box
-            document.getElementById('t-name').innerText = m.t_name;
-            document.getElementById('t-lang').innerText = m.t_lang;
-            document.getElementById('t-year').innerText = m.t_year;
-            document.getElementById('t-size').innerText = m.t_size;
-            document.getElementById('t-qual').innerText = m.t_qual;
-            document.getElementById('t-fmt').innerText = m.t_fmt;
+            document.getElementById('m-review').innerHTML = m.review;
 
-            // Fill Text Sections
-            document.getElementById('m-plot').innerText = m.plot;
-            document.getElementById('m-review').innerText = m.review;
+            playVideo(m.trailer);
 
-            // Fill Cast
-            const cBox = document.getElementById('castBox');
-            cBox.innerHTML = "";
-            m.cast.forEach(c => {
-                cBox.innerHTML += `
-                    <div class="cast-c">
-                        <img src="${c.i}" class="cast-i" onerror="this.src='https://via.placeholder.com/75?text=Cast'">
-                        <div class="cast-n">${c.n}</div>
-                    </div>
-                `;
+            // Fill Specs
+            const tRows = document.getElementById('tech-rows');
+            tRows.innerHTML = "";
+            m.details.forEach(row => {
+                tRows.innerHTML += `<div class="specs-row"><div class="s-key">${row[0]}</div><div class="s-val">${row[1]}</div></div>`;
             });
 
-            // Video Player (Auto Play)
-            vBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${m.trailer}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen></iframe>`;
+            // HANDLE SONGS SECTION (Hide for Songs, Show for Movies)
+            const songsSec = document.getElementById('songs-section');
+            if (m.type === "song") {
+                songsSec.style.display = 'none'; // Song ke andar songs list nahi dikhegi
+            } else {
+                songsSec.style.display = 'block'; // Movie ke andar dikhegi
+                const sList = document.getElementById('songs-list');
+                sList.innerHTML = "";
+                m.songs.forEach(s => {
+                    const sCard = document.createElement('div');
+                    sCard.className = 'song-card';
+                    sCard.onclick = () => playVideo(s.v);
+                    sCard.innerHTML = `
+                        <div class="s-icon"><i class="fa-solid fa-play"></i></div>
+                        <div class="s-info">
+                            <div class="s-name">${s.t}</div>
+                            <div class="s-art">${s.a}</div>
+                        </div>
+                    `;
+                    sList.appendChild(sCard);
+                });
+            }
 
-            // Show Modal & Lock Scroll
+            // Verdict
+            document.getElementById('p-rate').innerText = m.personal.rate;
+            document.getElementById('p-why').innerText = m.personal.why;
+            document.getElementById('p-good').innerText = m.personal.good;
+            document.getElementById('p-bad').innerText = m.personal.bad;
+
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            // Add history state for back button support
             history.pushState({m:true}, null, "");
         }
 
-        // Close Modal Function
+        function playVideo(vidID) {
+            if(vidID.includes('v=')) vidID = vidID.split('v=')[1].split('&')[0];
+            else if(vidID.includes('youtu.be/')) vidID = vidID.split('youtu.be/')[1];
+
+            vidBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${vidID}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen></iframe>`;
+            modal.scrollTop = 0;
+        }
+
         function closeModal() {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            vBox.innerHTML = ""; // Stop video
-            if(history.state) history.back(); // Go back in history if state exists
+            vidBox.innerHTML = "";
+            if(history.state) history.back();
         }
 
-        // Handle Mobile Back Button
         window.onpopstate = function() {
             if(modal.style.display === 'block') {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-                vBox.innerHTML = "";
+                vidBox.innerHTML = "";
             }
         }
     </script>
