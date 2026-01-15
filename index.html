@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK FLIX - Ultimate Pro</title>
+    <title>SK FLIX - Ultimate Pro Max</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -38,6 +38,7 @@
         .sec-title { font-size: 1.3rem; font-weight: 700; color: white; }
         .sec-sub { font-size: 0.9rem; color: #888; margin-top: 5px; }
         
+        /* Music Style Headers */
         .music-style { border-left-color: var(--music); }
         .music-style .sec-title { color: var(--music); }
 
@@ -121,6 +122,7 @@
 
     <div id="modal" class="modal">
         <div class="vid-box" id="vidPlayer"></div>
+        
         <div class="content">
             <div class="m-head">
                 <h1 class="m-title" id="m-title">Title</h1>
@@ -138,13 +140,13 @@
             </div>
 
             <div class="long-review" id="songs-section">
-                <div class="review-title" style="border-color:var(--music)">Top Songs / Themes</div>
+                <div class="review-title" style="border-color:var(--music)">Top 3 Hit Songs</div>
                 <div style="font-size:0.85rem; color:#888; margin-bottom:10px;">Click to play video above ▲</div>
                 <div id="songs-list"></div>
             </div>
 
             <div class="verdict-box" id="verdict-box">
-                <div class="v-badge" id="p-rate"></div>
+                <div class="v-badge" id="p-rate">9.5/10</div>
                 <div class="v-head">Why You Should Watch?</div>
                 <p class="v-text" id="p-why"></p>
                 <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
@@ -158,75 +160,147 @@
     </div>
 
     <script>
+        // --- CONTENT DATA ---
         const content = [
-            // 1. STRANGER THINGS
+            // === MOVIES ===
             {
                 id: 1, type: "top",
                 title: "Stranger Things",
                 poster: "https://i.ibb.co/LXLVpZJ1/11ee9ce236f8781d441082b4ed14308b.jpg",
+                // TEST LINK: (Normal Link)
                 trailer: "https://www.youtube.com/watch?v=b9EkMc79ZSU",
                 link: "https://www.netflix.com",
                 qual: "4K HDR",
-                details: [["Full Name", "Stranger Things"], ["Language", "Dual Audio"], ["Resolution", "4K Ultra HD"], ["Size", "2.8 GB/Ep"]],
-                review: `**Introduction**\nA global cultural phenomenon combining 80s nostalgia with sci-fi horror.\n\n**Verdict**\nA masterpiece.`,
-                songs: [{ t: "Running Up That Hill", a: "Kate Bush", v: "wp43OdtAAkM" }, { t: "Master of Puppets", a: "Metallica", v: "S9-D3IVWuyY" }],
-                personal: { rate: "9.5/10", why: "Pure nostalgia trip + incredible bond between friends.", good: "Steve & Dustin, 80s Music", bad: "Long Episodes" }
+                
+                details: [
+                    ["Full Name", "Stranger Things (S1-S4)"],
+                    ["Language", "Dual Audio [Hindi+Eng]"],
+                    ["Resolution", "4K Ultra HD (2160p)"],
+                    ["Audio Codec", "Dolby Atmos / E-AC3"],
+                    ["Size", "2.8 GB Per Episode"],
+                    ["Format", "MKV (HEVC 10bit)"],
+                    ["Source", "Netflix WEB-DL"],
+                    ["Subtitle", "English, Hindi (Muxed)"]
+                ],
+
+                review: `**Introduction to Hawkins**
+Stranger Things isn't just a show; it is a global cultural phenomenon. Created by the Duffer Brothers, this series masterfully combines the innocence of 1980s coming-of-age films with the terrifying suspense of sci-fi horror. From the very first episode, the synth-heavy soundtrack transports you back in time.
+
+**The Story So Far**
+The saga begins in the fictional town of Hawkins, Indiana, with the sudden disappearance of Will Byers. What starts as a simple missing person case quickly unravels into a government conspiracy involving secret laboratories and portals to another dimension known as 'The Upside Down'. At the center of it all is Eleven, a young girl with psychokinetic powers who escaped the lab.
+
+**Why It Works**
+The strength of Stranger Things lies in its characters. The chemistry between Mike, Dustin, Lucas, and Will is authentic and heartwarming. Steve Harrington’s transformation from a high school bully to a protective 'mom' figure is one of the best character arcs in TV history. Season 4 raised the stakes significantly by introducing Vecna, a villain with a personal connection to the heroes, making the horror feel more psychological and intense.`,
+
+                songs: [
+                    { t: "Running Up That Hill", a: "Kate Bush", v: "wp43OdtAAkM" },
+                    { t: "Master of Puppets", a: "Metallica", v: "S9-D3IVWuyY" },
+                    { t: "Separate Ways", a: "Journey", v: "4HkOme2cQYI" }
+                ],
+
+                personal: {
+                    rate: "9.5/10",
+                    why: "You should watch this for the pure nostalgia trip and the incredible bond between the friends. It’s perfect if you like 'The Goonies' mixed with 'Alien'.",
+                    good: "Steve & Dustin's Duo, 80s Music, Cinematic Horror",
+                    bad: "Episodes in Season 4 are very long (Movie length)"
+                }
             },
-            
-            // 2. RAANJHANAA
             {
                 id: 2, type: "fan",
                 title: "Raanjhanaa",
                 poster: "https://i.ibb.co/Y7j7KRRt/96ea5411a3b23a2e9cb6ff643dda4594.jpg",
+                // TEST LINK: (User's provided link)
                 trailer: "https://youtu.be/ER9vmhxFucg",
                 link: "https://www.primevideo.com",
                 qual: "FHD Bluray",
-                details: [["Full Name", "Raanjhanaa"], ["Language", "Hindi"], ["Resolution", "1080p FHD"], ["Size", "12.4 GB"]],
-                review: `**A Tale of Obsession**\nRaw, messy, and deeply emotional. Dhanush brings infectious energy.\n\n**Music**\nA.R. Rahman’s soundtrack is the soul of this film.`,
-                songs: [{ t: "Raanjhanaa Title", a: "Jaswinder Singh", v: "os61rWd6-54" }, { t: "Tum Tak", a: "Javed Ali", v: "k422M879bwc" }],
-                personal: { rate: "8.8/10", why: "Watch for Dhanush's raw acting and Rahman's music.", good: "Music, Acting, Climax", bad: "Stalking in first half" }
+
+                details: [
+                    ["Full Name", "Raanjhanaa (2013)"],
+                    ["Language", "Hindi (Original Audio)"],
+                    ["Resolution", "1080p Full HD"],
+                    ["Audio Codec", "DTS-HD Master Audio"],
+                    ["Size", "12.4 GB (Remux)"],
+                    ["Format", "MKV (AVC)"],
+                    ["Source", "Retail Bluray Disc"],
+                    ["Subtitle", "English"]
+                ],
+
+                review: `**A Tale of Obsession**
+Directed by Aanand L. Rai, 'Raanjhanaa' is not your typical Bollywood romance. It is raw, messy, and deeply emotional. Set against the vibrant and chaotic backdrop of Banaras, the film tells the story of Kundan, a Tamil Brahmin boy who falls hopelessly in love with Zoya, a Muslim girl, from the moment he sees her praying.
+
+**Performance Powerhouse**
+This film marked the Bollywood debut of South superstar Dhanush, and what a debut it was! He brings an infectious energy to the screen. His dialogue delivery, his smile, and his breakdown scenes are pitch-perfect. You root for him despite his flawed, stalker-like tendencies because his love feels so innocent and destructive at the same time. Sonam Kapoor delivers one of her career-best performances.
+
+**Musical Masterpiece**
+A.R. Rahman’s soundtrack is the soul of this film. Every song advances the story. 'Tum Tak' captures the devotion of love, while the title track captures the madness.`,
+
+                songs: [
+                    { t: "Raanjhanaa (Title)", a: "Jaswinder Singh", v: "os61rWd6-54" },
+                    { t: "Tum Tak", a: "Javed Ali", v: "k422M879bwc" },
+                    { t: "Banarasiya", a: "Shreya Ghoshal", v: "5j1jD6s8A3k" }
+                ],
+
+                personal: {
+                    rate: "8.8/10",
+                    why: "Watch it for Dhanush's raw acting and A.R. Rahman's magical music. It’s an emotional rollercoaster.",
+                    good: "Unforgettable Music, Dhanush's Acting, Climax",
+                    bad: "Glorifies stalking in the first half"
+                }
             },
 
-            // 3. SQUID GAME (NEW ADDED HERE)
-            {
-                id: 3, type: "top",
-                title: "Squid Game",
-                poster: "https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg",
-                trailer: "https://www.youtube.com/watch?v=oqxAJKy0ii4",
-                link: "https://www.netflix.com/title/81040344",
-                qual: "4K Dolby",
-                details: [["Full Name", "Squid Game"], ["Language", "Dual Audio"], ["Resolution", "4K HDR"], ["Size", "2.1 GB/Ep"]],
-                review: `**Global Phenomenon**\nA brutal critique of modern capitalism wrapped in a colorful package.\n\n**The Games**\n456 desperate individuals compete in deadly children's games.\n\n**Verdict**\nTense, emotional, and shocking.`,
-                songs: [{ t: "Pink Soldiers", a: "Theme", v: "H7uS-fG7QvM" }, { t: "Way Back Then", a: "Theme", v: "vV7Yg5N5_O0" }],
-                personal: { rate: "9.2/10", why: "Masterclass in tension. Forces you to ask: 'How far would I go for money?'", good: "Concept, Visuals", bad: "Extreme Violence" }
-            },
-
-            // 4. SONGS (TUM TAK)
+            // === SONGS (Using User's Link here too) ===
             {
                 id: 101, type: "song",
                 title: "Tum Tak",
                 poster: "https://i.scdn.co/image/ab67616d0000b273b1373587b640d244837332c6",
-                trailer: "https://youtu.be/k422M879bwc",
-                link: "http://spotify.com",
+                // TEST LINK: (Another Share Link format)
+                trailer: "https://youtu.be/k422M879bwc?si=AABBCCDD",
+                link: "https://open.spotify.com",
                 qual: "320kbps",
-                details: [["Format", "FLAC"], ["Bitrate", "320 kbps"]],
-                review: `**Song Review**\nThe soul of Raanjhanaa. Perfect for rainy days.`,
-                songs: [],
-                personal: { rate: "10/10", why: "Soothing masterpiece.", good: "Voice, Lyrics", bad: "None" }
-            },
 
-            // 5. SONGS (PUSHPA)
+                details: [
+                    ["Format", "FLAC / MP3"],
+                    ["Bitrate", "320 kbps (High Quality)"],
+                    ["Duration", "4:50"],
+                    ["Composer", "A.R. Rahman"],
+                    ["Label", "Eros Music"]
+                ],
+                review: `**Song Review: Tum Tak**
+"Tum Tak" is the soul of Raanjhanaa. Composed by the maestro A.R. Rahman and sung by Javed Ali, this song perfectly captures the essence of devotion. The use of Shehnai combined with modern beats creates a spiritual atmosphere. It depicts Kundan's journey from childhood to adulthood, solely focused on Zoya. A masterpiece of composition.`,
+
+                songs: [], 
+                personal: {
+                    rate: "10/10",
+                    why: "One of the most soothing romantic tracks ever made.",
+                    good: "Javed Ali's Voice, Shehnai Use",
+                    bad: "None"
+                }
+            },
             {
                 id: 102, type: "song",
                 title: "Pushpa Pushpa",
                 poster: "https://i.scdn.co/image/ab67616d0000b273397984489e229384768393e9",
                 trailer: "https://youtu.be/tOM-nwpkcRw",
-                link: "http://spotify.com",
+                link: "https://open.spotify.com",
                 qual: "Dolby Audio",
-                details: [["Format", "Dolby Digital"], ["Bitrate", "320 kbps"]],
-                review: `**Song Review**\nInstant energy booster with addictive beats.`,
+
+                details: [
+                    ["Format", "Dolby Digital"],
+                    ["Bitrate", "320 kbps"],
+                    ["Duration", "4:15"],
+                    ["Composer", "Devi Sri Prasad (DSP)"],
+                    ["Label", "T-Series"]
+                ],
+                review: `**Song Review: Pushpa Pushpa**
+The title track of Pushpa 2 is an absolute banger. DSP brings his signature energetic beats that force you to dance. The chant "Pushpa Pushpa" is addictive. Visually, Allu Arjun's swag takes it to another level.`,
+
                 songs: [],
-                personal: { rate: "9/10", why: "Gym/Party Anthem.", good: "Energy, Beats", bad: "Repetitive" }
+                personal: {
+                    rate: "9/10",
+                    why: "Instant energy booster. Perfect for gym or parties.",
+                    good: "High Energy, Addictive Beats",
+                    bad: "Lyrics are repetitive"
+                }
             }
         ];
 
@@ -238,8 +312,8 @@
         content.forEach(m => {
             const isSong = m.type === "song";
             const qColor = isSong ? "var(--music)" : "var(--green)";
-            const btnColor = isSong ? "var(--music)" : "var(--blue)";
             const btnText = isSong ? "Listen Now" : "Watch Options";
+            const btnColor = isSong ? "var(--music)" : "var(--blue)";
 
             const card = document.createElement('div');
             card.className = 'card';
@@ -258,27 +332,31 @@
             else if(m.type === 'song') r3.appendChild(card);
         });
 
-        // --- MODAL ---
+        // --- MODAL LOGIC ---
         const modal = document.getElementById('modal');
         const vidBox = document.getElementById('vidPlayer');
 
         function openModal(id) {
             const m = content.find(x => x.id === id);
+
             document.getElementById('m-title').innerText = m.title;
             const btn = document.getElementById('m-link');
             btn.href = m.link;
             btn.innerHTML = m.type === "song" ? "Listen on Spotify" : "Watch Full on OTT";
             btn.style.background = m.type === "song" ? "var(--music)" : "var(--red)";
-            
-            document.getElementById('m-review').innerHTML = m.review;
-            playVideo(m.trailer);
 
+            document.getElementById('m-review').innerHTML = m.review;
+
+            playVideo(m.trailer); // Play initial video
+
+            // Specs
             const tRows = document.getElementById('tech-rows');
             tRows.innerHTML = "";
             m.details.forEach(row => {
                 tRows.innerHTML += `<div class="specs-row"><div class="s-key">${row[0]}</div><div class="s-val">${row[1]}</div></div>`;
             });
 
+            // Songs Section
             const songsSec = document.getElementById('songs-section');
             if (m.type === "song") {
                 songsSec.style.display = 'none';
@@ -292,11 +370,16 @@
                     sCard.onclick = () => playVideo(s.v);
                     sCard.innerHTML = `
                         <div class="s-icon"><i class="fa-solid fa-play"></i></div>
-                        <div class="s-info"><div class="s-name">${s.t}</div><div class="s-art">${s.a}</div></div>`;
+                        <div class="s-info">
+                            <div class="s-name">${s.t}</div>
+                            <div class="s-art">${s.a}</div>
+                        </div>
+                    `;
                     sList.appendChild(sCard);
                 });
             }
 
+            // Verdict
             document.getElementById('p-rate').innerText = m.personal.rate;
             document.getElementById('p-why').innerText = m.personal.why;
             document.getElementById('p-good').innerText = m.personal.good;
@@ -307,13 +390,27 @@
             history.pushState({m:true}, null, "");
         }
 
+        // --- THE MAGIC LINK CLEANER (Fix for "Error occurred") ---
         function playVideo(url) {
             if (!url) return;
+            
+            // Remove extra whitespace
             url = url.trim();
-            let vidID = url;
+            
+            let vidID = "";
+            
+            // 1. Regular Expression to find ID (Works for ALL link types)
+            // It looks for 11 chars after 'v=', 'embed/', 'youtu.be/' etc.
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
-            if (match && match[2].length === 11) { vidID = match[2]; }
+
+            if (match && match[2].length === 11) {
+                vidID = match[2];
+            } else {
+                // Fallback (if ID is already just the ID)
+                vidID = url;
+            }
+
             vidBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${vidID}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen></iframe>`;
             modal.scrollTop = 0;
         }
@@ -324,7 +421,14 @@
             vidBox.innerHTML = "";
             if(history.state) history.back();
         }
-        window.onpopstate = function() { if(modal.style.display==='block') closeModal(); }
+
+        window.onpopstate = function() {
+            if(modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                vidBox.innerHTML = "";
+            }
+        }
     </script>
 </body>
 </html>
