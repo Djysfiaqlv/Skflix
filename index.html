@@ -1,314 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SK FLIX – Movie Reviews</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK FLIX - Pro</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-<style>
-:root{
-  --bg:#000;
-  --yellow:#F5C518;
-  --red:#E50914;
-  --text:#fff;
-  --muted:#aaa;
-}
+    <style>
+        /* --- 1. PRO THEME --- */
+        :root {
+            --bg: #000000;
+            --card-bg: #121212;
+            --text: #ffffff;
+            --text-gray: #a1a1a1;
+            --accent: #F5C518; /* IMDb Yellow */
+            --btn-gray: #2C2C2C;
+            --btn-blue: #57a5ff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 30px; }
 
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial, Helvetica, sans-serif;
-}
+        /* Hide Scrollbar */
+        ::-webkit-scrollbar { display: none; }
 
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 16px;
-  position:sticky;
-  top:0;
-  background:#000;
-  z-index:10;
-}
-header h1{
-  color:var(--yellow);
-  font-size:22px;
-}
-header a{
-  color:#fff;
-  font-size:18px;
-  text-decoration:none;
-}
+        /* --- 2. HEADER --- */
+        header {
+            padding: 15px 20px; background: #121212; position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid #333; display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; background: var(--accent); color: black; padding: 2px 8px; border-radius: 4px; }
+        .user-icon { font-size: 1.5rem; color: white; }
 
-/* SECTION */
-.section{
-  padding:14px 0;
-}
-.section h2{
-  margin:0 16px 12px;
-  font-size:18px;
-}
+        /* --- 3. SECTIONS (Horizontal Scroll) --- */
+        .section-header {
+            padding: 20px 20px 10px 20px; border-left: 4px solid var(--accent);
+            margin: 10px 0 0 15px;
+        }
+        .section-title { font-size: 1.2rem; font-weight: 700; color: white; line-height: 1; }
+        .section-sub { font-size: 0.9rem; color: var(--text-gray); margin-top: 5px; }
 
-/* HORIZONTAL ROW */
-.row{
-  display:flex;
-  gap:12px;
-  overflow-x:auto;
-  padding:0 16px;
-}
-.row::-webkit-scrollbar{display:none}
+        .scroll-container {
+            display: flex; overflow-x: auto; gap: 15px; padding: 15px 20px;
+            scroll-behavior: smooth;
+        }
 
-/* MOVIE CARD */
-.card{
-  min-width:150px;
-  position:relative;
-  cursor:pointer;
-}
-.card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-  border-radius:10px;
-}
-.tag{
-  position:absolute;
-  top:6px;
-  left:6px;
-  background:var(--red);
-  padding:2px 6px;
-  font-size:10px;
-  border-radius:4px;
-}
-.rating{
-  position:absolute;
-  bottom:42px;
-  left:6px;
-  color:var(--yellow);
-  font-size:12px;
-}
-.card p{
-  margin:6px 0 0;
-  font-size:13px;
-  text-align:center;
-}
+        /* --- 4. CARD DESIGN (IMDb Style) --- */
+        .card {
+            min-width: 150px; max-width: 150px; background: var(--card-bg);
+            border-radius: 0 0 8px 8px; overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+        }
+        
+        .poster-box { position: relative; height: 220px; }
+        .poster-box img { width: 100%; height: 100%; object-fit: cover; }
+        .bookmark {
+            position: absolute; top: 0; left: 0; width: 28px; height: 36px;
+            background: rgba(20, 20, 20, 0.8); 
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .card-body { padding: 10px; }
+        .rating-row { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; color: var(--text-gray); margin-bottom: 5px; }
+        .rating-row i { color: var(--accent); }
+        
+        .movie-name {
+            font-size: 0.95rem; font-weight: 500; margin-bottom: 12px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
 
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.95);
-  display:none;
-  z-index:99;
-  overflow-y:auto;
-}
-.modal-content{
-  max-width:900px;
-  margin:auto;
-  padding:16px;
-}
-.close{
-  font-size:22px;
-  cursor:pointer;
-}
+        /* Buttons on Card */
+        .btn-watch {
+            display: block; width: 100%; padding: 8px; background: var(--btn-gray);
+            color: var(--btn-blue); font-weight: 600; font-size: 0.8rem; text-align: center;
+            border-radius: 4px; margin-bottom: 8px; cursor: pointer; text-decoration: none;
+        }
+        .btn-trailer {
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            width: 100%; padding: 6px; border: 1px solid #444; border-radius: 20px;
+            color: white; font-size: 0.8rem; cursor: pointer;
+        }
+        .btn-trailer:hover { background: #333; }
 
-/* VIDEO */
-iframe{
-  width:100%;
-  height:220px;
-  border-radius:10px;
-  margin-bottom:14px;
-}
+        /* --- 5. DETAILS MODAL --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 1000; overflow-y: auto;
+        }
+        .video-fixed { position: sticky; top: 0; width: 100%; aspect-ratio: 16/9; background: black; z-index: 10; }
+        .video-fixed iframe { width: 100%; height: 100%; border: 0; }
+        
+        .modal-content { padding: 20px; }
+        .m-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .m-title { font-size: 1.8rem; font-weight: 500; line-height: 1.2; width: 90%; }
+        .m-close { font-size: 1.5rem; color: #888; padding: 5px; }
+        
+        .m-meta { font-size: 0.9rem; color: #aaa; margin: 5px 0 20px 0; }
+        
+        /* A-Z Table */
+        .details-grid {
+            background: #191919; padding: 15px; border-radius: 8px; margin-bottom: 20px;
+        }
+        .dg-row { display: flex; justify-content: space-between; border-bottom: 1px solid #333; padding: 10px 0; }
+        .dg-row:last-child { border-bottom: none; }
+        .dg-label { font-weight: 700; color: white; }
+        .dg-val { color: #bbb; text-align: right; width: 60%; }
 
-/* TECH BOX */
-.tech-box{
-  border:1px solid #333;
-  padding:12px;
-  margin-bottom:18px;
-  font-size:14px;
-}
-.tech-box div{
-  margin-bottom:6px;
-}
+        .big-watch-btn {
+            display: block; width: 100%; padding: 15px; background: var(--accent); 
+            color: black; font-weight: 800; text-align: center; border-radius: 5px;
+            text-decoration: none; font-size: 1.1rem; margin-bottom: 30px;
+        }
 
-/* TEXT SECTIONS */
-h3{
-  margin-top:20px;
-  color:var(--yellow);
-}
-.story, .review{
-  line-height:1.6;
-  color:#ddd;
-  font-size:15px;
-}
-.review{
-  margin-top:10px;
-}
-
-/* CAST */
-.cast-row{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-}
-.cast{
-  text-align:center;
-  font-size:12px;
-}
-.cast img{
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  object-fit:cover;
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:16px;
-  color:var(--muted);
-  font-size:13px;
-}
-</style>
+    </style>
 </head>
-
 <body>
 
-<header>
-  <h1>SK FLIX</h1>
-  <a href="https://www.instagram.com/shoav_khan_00" target="_blank">📷</a>
-</header>
+    <header>
+        <div class="logo">SK FLIX</div>
+        <i class="fa-regular fa-circle-user user-icon"></i>
+    </header>
 
-<div id="app"></div>
+    <div class="section-header">
+        <div class="section-title">Top Picks ></div>
+        <div class="section-sub">TV shows and movies just for you</div>
+    </div>
+    <div class="scroll-container" id="topPicks">
+        </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-content" id="modalContent"></div>
-</div>
+    <div class="section-header">
+        <div class="section-title">Fan Favorites ></div>
+        <div class="section-sub">This week's top TV and movies</div>
+    </div>
+    <div class="scroll-container" id="fanFavs">
+        </div>
 
-<footer>
-  Developed by Shoav Khan
-</footer>
+    <div id="modal" class="modal">
+        <div class="video-fixed" id="v-container"></div>
+        <div class="modal-content">
+            <div class="m-header">
+                <h1 class="m-title" id="m-title">Title</h1>
+                <i class="fa-solid fa-xmark m-close" onclick="closeModal()"></i>
+            </div>
+            <div class="m-meta" id="m-meta">2024 • UA • 2h 30m</div>
 
-<script>
-/* =========================
-   MOVIE DATA (YAHI EDIT HOGA)
-   ========================= */
+            <a href="#" id="m-link" class="big-watch-btn" target="_blank">Watch Now</a>
 
-const movies = [
-{
- title: "Your Name",
- poster: "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png",
- trailer: "https://www.youtube.com/embed/xU47nhruN-Q?mute=1",
- quality: "4K HDR",
- rating: "⭐ 8.4",
+            <h3 style="color:var(--accent); margin-bottom:10px;">Details</h3>
+            <div class="details-grid">
+                <div class="dg-row"><span class="dg-label">Director</span><span class="dg-val" id="d-dir"></span></div>
+                <div class="dg-row"><span class="dg-label">Cast</span><span class="dg-val" id="d-cast"></span></div>
+                <div class="dg-row"><span class="dg-label">Rating</span><span class="dg-val" id="d-rate"></span></div>
+                <div class="dg-row"><span class="dg-label">Box Office</span><span class="dg-val" id="d-box"></span></div>
+            </div>
 
- details: {
-   fullName: "Your Name (Kimi no Na wa)",
-   language: "Japanese",
-   genre: "Romance, Fantasy, Drama",
-   runtime: "106 Minutes",
-   release: "2016",
-   director: "Makoto Shinkai"
- },
+            <h3 style="color:var(--accent); margin-bottom:10px;">Storyline</h3>
+            <p style="color:#ddd; line-height:1.6;" id="m-desc"></p>
+        </div>
+    </div>
 
- storyline: `
-Mitsuha Miyamizu ek chhoti si mountain town mein rehne wali ladki hai jo apni boring zindagi se pareshan hai.
-Taki Tachibana Tokyo ka rehne wala ek school student hai jo city life mein busy rehta hai.
-Achaanak dono ke beech ek supernatural connection ban jata hai jisme wo ek dusre ke bodies mein jaag uthte hain.
-Dono is mystery ko samajhne ki koshish karte hain aur dheere dheere ek gehra emotional rishta ban jata hai.
-`,
+    <script>
+        // --- 1. MOVIE DATA ---
+        const db = [
+            {
+                id: 1, section: "top",
+                title: "Stranger Things",
+                year: "2016", rating: "8.7", age: "16+", dur: "4 Seasons",
+                poster: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+                trailer: "b9EkMc79ZSU",
+                link: "https://www.netflix.com",
+                dir: "The Duffer Brothers",
+                cast: "Millie Bobby Brown, Finn Wolfhard",
+                box: "Netflix Most Watched",
+                desc: "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces in order to get him back."
+            },
+            {
+                id: 2, section: "top",
+                title: "Sanju",
+                year: "2018", rating: "7.6", age: "UA", dur: "2h 35m",
+                poster: "https://upload.wikimedia.org/wikipedia/en/2/22/Sanju_poster.jpeg",
+                trailer: "1J76wN0TPI4",
+                link: "https://www.hotstar.com",
+                dir: "Rajkumar Hirani",
+                cast: "Ranbir Kapoor, Vicky Kaushal",
+                box: "₹586.85 Crore",
+                desc: "Sanju is a biopic of the controversial life of actor Sanjay Dutt: his film career, jail sentence and personal life."
+            },
+            {
+                id: 3, section: "top",
+                title: "October",
+                year: "2018", rating: "7.5", age: "U", dur: "1h 55m",
+                poster: "https://upload.wikimedia.org/wikipedia/en/7/75/October_2018.jpg",
+                trailer: "pQUARfcC6Zk",
+                link: "https://www.primevideo.com",
+                dir: "Shoojit Sircar",
+                cast: "Varun Dhawan, Banita Sandhu",
+                box: "₹58 Crore",
+                desc: "Dan, a hotel management intern, takes care of his comatose fellow intern Shiuli unconditionally."
+            },
+            {
+                id: 4, section: "fan",
+                title: "Your Name",
+                year: "2016", rating: "8.4", age: "U", dur: "1h 46m",
+                poster: "https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg",
+                trailer: "xU47nhruN-Q",
+                link: "https://www.netflix.com",
+                dir: "Makoto Shinkai",
+                cast: "Ryunosuke Kamiki",
+                box: "$382 Million",
+                desc: "Two strangers find themselves linked in a bizarre way. When a connection forms, will distance be the only thing to keep them apart?"
+            },
+            {
+                id: 5, section: "fan",
+                title: "Raanjhanaa",
+                year: "2013", rating: "7.6", age: "UA", dur: "2h 20m",
+                poster: "https://m.media-amazon.com/images/M/MV5BMjA2MzMzMDI2MF5BMl5BanBnXkFtZTgwNzM2NjY3OIE@._V1_.jpg",
+                trailer: "ER9I2oJ-oPk",
+                link: "https://www.primevideo.com",
+                dir: "Aanand L. Rai",
+                cast: "Dhanush, Sonam Kapoor",
+                box: "₹135 Crore",
+                desc: "Kundan discovers that his childhood sweetheart Zoya loves city-bred Akram and wants to marry him. However, he persists in trying to win her heart."
+            },
+            {
+                id: 6, section: "fan",
+                title: "12th Fail",
+                year: "2023", rating: "9.2", age: "U", dur: "2h 27m",
+                poster: "https://upload.wikimedia.org/wikipedia/en/f/f2/12th_Fail_poster.jpeg",
+                trailer: "WeRPSH2xZro",
+                link: "https://www.hotstar.com",
+                dir: "Vidhu Vinod Chopra",
+                cast: "Vikrant Massey",
+                box: "₹70 Crore",
+                desc: "Based on the true story of IPS officer Manoj Kumar Sharma, shedding light on the struggles of students attempting the UPSC exam."
+            }
+        ];
 
- review: `
-Your Name sirf ek anime film nahi hai, balki ek emotional experience hai jo romance, fantasy aur destiny ko ek saath jodta hai.
-Makoto Shinkai ne is film mein visuals ko ek alag hi level par le jaaya hai.
-Har frame ek painting ki tarah lagta hai aur background music emotions ko aur gehra bana deta hai.
-Film ki pacing shuru mein slow lag sakti hai, lekin jaise jaise kahani aage badhti hai, ek strong emotional grip bana leti hai.
-Characters believable hain aur unki confusion, longing aur emotions audience ko deeply connect karte hain.
-Second half mein jab real twist reveal hota hai, film ek emotional punch deti hai.
-Your Name ka biggest strength uska music aur atmosphere hai.
-Ye film repeat viewing ke layak hai aur time ke saath aur behtar lagti hai.
-Overall, Your Name ek beautifully crafted love story hai jo memory, time aur destiny ke concepts ko poetic tareeke se explore karti hai.
-`,
+        // --- 2. RENDER LOGIC ---
+        const topCont = document.getElementById('topPicks');
+        const fanCont = document.getElementById('fanFavs');
 
- cast: [
-  { name:"Mitsuha Miyamizu", img:"https://i.imgur.com/7D7I6dI.jpg" },
-  { name:"Taki Tachibana", img:"https://i.imgur.com/9Xq0M5z.jpg" }
- ]
-}
-];
+        function render() {
+            db.forEach(m => {
+                const card = `
+                    <div class="card" onclick="openDetails(${m.id})">
+                        <div class="poster-box">
+                            <img src="${m.poster}">
+                            <div class="bookmark"><i class="fa-solid fa-plus" style="color:white"></i></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="rating-row"><i class="fa-solid fa-star"></i> ${m.rating}</div>
+                            <div class="movie-name">${m.title}</div>
+                            <div class="btn-watch">Watch options</div>
+                            <div class="btn-trailer" onclick="event.stopPropagation(); openDetails(${m.id})">
+                                <i class="fa-solid fa-play"></i> Trailer
+                            </div>
+                        </div>
+                    </div>
+                `;
+                if(m.section === "top") topCont.innerHTML += card;
+                else fanCont.innerHTML += card;
+            });
+        }
 
-/* =========================
-   RENDER HOME
-   ========================= */
+        // --- 3. MODAL LOGIC ---
+        const modal = document.getElementById('modal');
+        const vidCont = document.getElementById('v-container');
 
-const app = document.getElementById("app");
+        function openDetails(id) {
+            const m = db.find(x => x.id === id);
+            
+            // Fill Info
+            document.getElementById('m-title').innerText = m.title;
+            document.getElementById('m-meta').innerText = `${m.year} • ${m.age} • ${m.dur}`;
+            document.getElementById('m-desc').innerText = m.desc;
+            document.getElementById('m-link').href = m.link;
 
-app.innerHTML = `
-<div class="section">
-  <h2>Top Picks</h2>
-  <div class="row">
-    ${movies.map(m => `
-      <div class="card" onclick='openModal(${JSON.stringify(m)})'>
-        <span class="tag">${m.quality}</span>
-        <img src="${m.poster}">
-        <span class="rating">${m.rating}</span>
-        <p>${m.title}</p>
-      </div>
-    `).join("")}
-  </div>
-</div>
-`;
+            // Fill Table
+            document.getElementById('d-dir').innerText = m.dir;
+            document.getElementById('d-cast').innerText = m.cast;
+            document.getElementById('d-rate').innerText = m.rating;
+            document.getElementById('d-box').innerText = m.box;
 
-/* =========================
-   MODAL LOGIC
-   ========================= */
+            // Universal Video Embed (No Error 153)
+            vidCont.innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${m.trailer}?autoplay=1&rel=0&modestbranding=1&playsinline=1" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>`;
 
-function openModal(m){
- history.pushState({modal:true},"");
- document.getElementById("modal").style.display="block";
- document.getElementById("modalContent").innerHTML = `
- <span class="close" onclick="closeModal()">✕</span>
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            history.pushState({open: true}, null, "");
+        }
 
- <iframe src="${m.trailer}" allowfullscreen></iframe>
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            vidCont.innerHTML = "";
+            if(history.state) history.back();
+        }
 
- <div class="tech-box">
-   <div><b>Full Name:</b> ${m.details.fullName}</div>
-   <div><b>Language:</b> ${m.details.language}</div>
-   <div><b>Genre:</b> ${m.details.genre}</div>
-   <div><b>Runtime:</b> ${m.details.runtime}</div>
-   <div><b>Release:</b> ${m.details.release}</div>
-   <div><b>Director:</b> ${m.details.director}</div>
- </div>
+        window.onpopstate = function() {
+            if (modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                vidCont.innerHTML = "";
+            }
+        };
 
- <h3>Storyline</h3>
- <div class="story">${m.storyline}</div>
-
- <h3>Full Review</h3>
- <div class="review">${m.review}</div>
-
- <h3>Cast</h3>
- <div class="cast-row">
- ${m.cast.map(c => `
-   <div class="cast">
-     <img src="${c.img}">
-     <div>${c.name}</div>
-   </div>
- `).join("")}
- </div>
- `;
-}
-
-function closeModal(){
- document.getElementById("modal").style.display="none";
- history.back();
-}
-
-window.onpopstate = () => {
- document.getElementById("modal").style.display="none";
-};
-</script>
-
+        render();
+    </script>
 </body>
 </html>
