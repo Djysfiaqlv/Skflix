@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -160,14 +160,15 @@
     </div>
 
     <script>
-        // --- DATA ---
+        // --- CONTENT DATA ---
         const content = [
             // === MOVIES ===
             {
-                id: 1, type: "top", // Top Picks Row
+                id: 1, type: "top",
                 title: "Stranger Things",
                 poster: "https://i.ibb.co/LXLVpZJ1/11ee9ce236f8781d441082b4ed14308b.jpg",
-                trailer: "b9EkMc79ZSU",
+                // TEST LINK: (Normal Link)
+                trailer: "https://www.youtube.com/watch?v=b9EkMc79ZSU",
                 link: "https://www.netflix.com",
                 qual: "4K HDR",
                 
@@ -205,10 +206,11 @@ The strength of Stranger Things lies in its characters. The chemistry between Mi
                 }
             },
             {
-                id: 2, type: "fan", // Fan Favorites Row
+                id: 2, type: "fan",
                 title: "Raanjhanaa",
                 poster: "https://i.ibb.co/Y7j7KRRt/96ea5411a3b23a2e9cb6ff643dda4594.jpg",
-                trailer: "https://youtu.be/ER9vmhxFucg-54",
+                // TEST LINK: (User's provided link)
+                trailer: "https://youtu.be/ER9vmhxFucg",
                 link: "https://www.primevideo.com",
                 qual: "FHD Bluray",
 
@@ -233,9 +235,9 @@ This film marked the Bollywood debut of South superstar Dhanush, and what a debu
 A.R. Rahman’s soundtrack is the soul of this film. Every song advances the story. 'Tum Tak' captures the devotion of love, while the title track captures the madness.`,
 
                 songs: [
-                    { t: "Raanjhanaa (Title)", a: "Jaswinder Singh", v: "https://youtu.be/75o1iC1OSrE-54" },
-                    { t: "Tum Tak", a: "Javed Ali", v: "https://youtu.be/AGsn2ycFRqI" },
-                    { t: "Banarasiya", a: "Shreya Ghoshal", v: "https://youtu.be/LU29lSULUsk" }
+                    { t: "Raanjhanaa (Title)", a: "Jaswinder Singh", v: "os61rWd6-54" },
+                    { t: "Tum Tak", a: "Javed Ali", v: "k422M879bwc" },
+                    { t: "Banarasiya", a: "Shreya Ghoshal", v: "5j1jD6s8A3k" }
                 ],
 
                 personal: {
@@ -246,12 +248,13 @@ A.R. Rahman’s soundtrack is the soul of this film. Every song advances the sto
                 }
             },
 
-            // === SONGS (NEW SECTION KE LIYE DATA) ===
+            // === SONGS (Using User's Link here too) ===
             {
-                id: 101, type: "song", // Trending Hits Row
+                id: 101, type: "song",
                 title: "Tum Tak",
                 poster: "https://i.scdn.co/image/ab67616d0000b273b1373587b640d244837332c6",
-                trailer: "https://youtu.be/AGsn2ycFRqI",
+                // TEST LINK: (Another Share Link format)
+                trailer: "https://youtu.be/k422M879bwc?si=AABBCCDD",
                 link: "https://open.spotify.com",
                 qual: "320kbps",
 
@@ -265,7 +268,7 @@ A.R. Rahman’s soundtrack is the soul of this film. Every song advances the sto
                 review: `**Song Review: Tum Tak**
 "Tum Tak" is the soul of Raanjhanaa. Composed by the maestro A.R. Rahman and sung by Javed Ali, this song perfectly captures the essence of devotion. The use of Shehnai combined with modern beats creates a spiritual atmosphere. It depicts Kundan's journey from childhood to adulthood, solely focused on Zoya. A masterpiece of composition.`,
 
-                songs: [], // Song ke andar aur songs nahi honge
+                songs: [], 
                 personal: {
                     rate: "10/10",
                     why: "One of the most soothing romantic tracks ever made.",
@@ -277,7 +280,7 @@ A.R. Rahman’s soundtrack is the soul of this film. Every song advances the sto
                 id: 102, type: "song",
                 title: "Pushpa Pushpa",
                 poster: "https://i.scdn.co/image/ab67616d0000b273397984489e229384768393e9",
-                trailer: "tOM-nwpkcRw",
+                trailer: "https://youtu.be/tOM-nwpkcRw",
                 link: "https://open.spotify.com",
                 qual: "Dolby Audio",
 
@@ -304,11 +307,10 @@ The title track of Pushpa 2 is an absolute banger. DSP brings his signature ener
         // --- RENDER LOGIC ---
         const r1 = document.getElementById('movie-row');
         const r2 = document.getElementById('fav-row');
-        const r3 = document.getElementById('music-row'); // New Row
+        const r3 = document.getElementById('music-row');
 
         content.forEach(m => {
             const isSong = m.type === "song";
-            // Different colors for song cards
             const qColor = isSong ? "var(--music)" : "var(--green)";
             const btnText = isSong ? "Listen Now" : "Watch Options";
             const btnColor = isSong ? "var(--music)" : "var(--blue)";
@@ -327,7 +329,7 @@ The title track of Pushpa 2 is an absolute banger. DSP brings his signature ener
             
             if(m.type === 'top') r1.appendChild(card);
             else if(m.type === 'fan') r2.appendChild(card);
-            else if(m.type === 'song') r3.appendChild(card); // Add to Music Row
+            else if(m.type === 'song') r3.appendChild(card);
         });
 
         // --- MODAL LOGIC ---
@@ -340,27 +342,26 @@ The title track of Pushpa 2 is an absolute banger. DSP brings his signature ener
             document.getElementById('m-title').innerText = m.title;
             const btn = document.getElementById('m-link');
             btn.href = m.link;
-            // Button adapts based on type
             btn.innerHTML = m.type === "song" ? "Listen on Spotify" : "Watch Full on OTT";
             btn.style.background = m.type === "song" ? "var(--music)" : "var(--red)";
 
             document.getElementById('m-review').innerHTML = m.review;
 
-            playVideo(m.trailer);
+            playVideo(m.trailer); // Play initial video
 
-            // Fill Specs
+            // Specs
             const tRows = document.getElementById('tech-rows');
             tRows.innerHTML = "";
             m.details.forEach(row => {
                 tRows.innerHTML += `<div class="specs-row"><div class="s-key">${row[0]}</div><div class="s-val">${row[1]}</div></div>`;
             });
 
-            // HANDLE SONGS SECTION (Hide for Songs, Show for Movies)
+            // Songs Section
             const songsSec = document.getElementById('songs-section');
             if (m.type === "song") {
-                songsSec.style.display = 'none'; // Song ke andar songs list nahi dikhegi
+                songsSec.style.display = 'none';
             } else {
-                songsSec.style.display = 'block'; // Movie ke andar dikhegi
+                songsSec.style.display = 'block';
                 const sList = document.getElementById('songs-list');
                 sList.innerHTML = "";
                 m.songs.forEach(s => {
@@ -389,9 +390,26 @@ The title track of Pushpa 2 is an absolute banger. DSP brings his signature ener
             history.pushState({m:true}, null, "");
         }
 
-        function playVideo(vidID) {
-            if(vidID.includes('v=')) vidID = vidID.split('v=')[1].split('&')[0];
-            else if(vidID.includes('youtu.be/')) vidID = vidID.split('youtu.be/')[1];
+        // --- THE MAGIC LINK CLEANER (Fix for "Error occurred") ---
+        function playVideo(url) {
+            if (!url) return;
+            
+            // Remove extra whitespace
+            url = url.trim();
+            
+            let vidID = "";
+            
+            // 1. Regular Expression to find ID (Works for ALL link types)
+            // It looks for 11 chars after 'v=', 'embed/', 'youtu.be/' etc.
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+
+            if (match && match[2].length === 11) {
+                vidID = match[2];
+            } else {
+                // Fallback (if ID is already just the ID)
+                vidID = url;
+            }
 
             vidBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${vidID}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen></iframe>`;
             modal.scrollTop = 0;
