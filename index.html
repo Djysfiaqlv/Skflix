@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,19 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* --- THEME --- */
         :root {
             --bg: #050505;
             --card-bg: #141414;
             --text: #e0e0e0;
-            --accent: #F5C518; /* Yellow */
+            --accent: #F5C518;
             --red: #E50914;
             --blue: #5799ef;
             --green: #46d369;
             --music: #d62976;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 20px; }
         ::-webkit-scrollbar { display: none; }
 
         /* --- HEADER --- */
@@ -32,7 +30,6 @@
         }
         .logo { font-size: 1.4rem; font-weight: 900; color: var(--red); white-space: nowrap; }
         .logo span { color: white; }
-        
         .search-box {
             flex: 1; display: flex; align-items: center; background: #222; 
             padding: 8px 12px; border-radius: 20px; border: 1px solid #444;
@@ -41,21 +38,27 @@
             background: transparent; border: none; outline: none; color: white; 
             width: 100%; margin-left: 10px; font-size: 0.95rem;
         }
-        
         .insta { color: white; font-size: 1.5rem; margin-left: auto; }
+
+        /* --- CATEGORY FILTER --- */
+        .filter-container {
+            display: flex; gap: 10px; overflow-x: auto; padding: 15px; background: var(--bg);
+            position: sticky; top: 65px; z-index: 90; border-bottom: 1px solid #222;
+        }
+        .filter-btn {
+            background: #222; color: #888; padding: 8px 20px; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid #333;
+            white-space: nowrap; transition: 0.3s;
+        }
+        .filter-btn.active { background: var(--red); color: white; border-color: var(--red); }
 
         /* --- SECTIONS --- */
         .sec-head { padding: 20px 15px 10px; border-left: 4px solid var(--accent); margin-left: 15px; margin-top: 15px; }
         .sec-title { font-size: 1.3rem; font-weight: 700; color: white; }
         .sec-sub { font-size: 0.9rem; color: #888; margin-top: 5px; }
-        
-        .music-style { border-left-color: var(--music); }
-        .music-style .sec-title { color: var(--music); }
-
         .scroll-box { display: flex; gap: 15px; overflow-x: auto; padding: 15px; scroll-behavior: smooth; }
         
-        /* SEARCH GRID */
-        #search-container { display: none; min-height: 80vh; }
+        #filter-results-container { display: none; min-height: 80vh; }
         .grid-box { padding: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
 
         /* --- CARDS --- */
@@ -64,7 +67,6 @@
         .poster { width: 100%; height: 220px; object-fit: cover; }
         .card-body { padding: 10px; }
         .c-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 8px; }
-        
         .btn-watch { background: #222; color: var(--blue); width: 100%; padding: 8px; border-radius: 4px; text-align: center; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; }
         .btn-trail { border: 1px solid #555; width: 100%; padding: 6px; border-radius: 20px; text-align: center; font-size: 0.8rem; display: flex; justify-content: center; gap: 5px; }
 
@@ -72,11 +74,11 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; overflow-y: auto; }
         .vid-box { position: sticky; top: 0; width: 100%; aspect-ratio: 16/9; background: black; z-index: 10; border-bottom: 1px solid #333; }
         .vid-box iframe { width: 100%; height: 100%; border: 0; }
-
-        .content { padding: 20px; }
-        .m-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .m-title { font-size: 1.8rem; font-weight: 800; line-height: 1.1; color: var(--accent); width: 85%; }
-        .m-close { font-size: 2rem; color: #fff; cursor: pointer; }
+        .content-box { padding: 20px; }
+        
+        .m-head { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .m-back { font-size: 1.4rem; color: white; cursor: pointer; padding: 5px; }
+        .m-title { font-size: 1.6rem; font-weight: 800; line-height: 1.1; color: var(--accent); flex: 1; }
 
         .specs-box { background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-bottom: 30px; border-left: 4px solid var(--blue); }
         .specs-head { background: #1a1a1a; padding: 10px 15px; font-weight: 700; color: var(--blue); border-bottom: 1px solid #333; text-transform: uppercase; }
@@ -100,6 +102,10 @@
         .v-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; margin-bottom: 10px; }
         
         .play-main { display: block; width: 100%; padding: 15px; background: var(--red); color: white; text-align: center; font-weight: 900; font-size: 1.1rem; text-decoration: none; border-radius: 6px; margin: 30px 0; }
+
+        footer { margin-top: 50px; padding: 30px 15px; background: #111; text-align: center; border-top: 1px solid #333; }
+        .dev-name { font-size: 1.1rem; font-weight: 900; color: var(--accent); letter-spacing: 1px; }
+        .dev-sub { font-size: 0.75rem; color: #666; margin-top: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -108,87 +114,95 @@
         <div class="logo">SK <span>FLIX</span></div>
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass" style="color:#888"></i>
-            <input type="text" id="searchInput" placeholder="Search...">
+            <input type="text" id="searchInput" placeholder="Search movies...">
         </div>
         <a href="https://www.instagram.com/shoav_khan_00" target="_blank" class="insta"><i class="fa-brands fa-instagram"></i></a>
     </header>
 
-    <div id="search-container">
+    <div class="filter-container">
+        <div class="filter-btn active" onclick="filterCategory('All', this)">All</div>
+        <div class="filter-btn" onclick="filterCategory('Action', this)">Action</div>
+        <div class="filter-btn" onclick="filterCategory('Anime', this)">Anime</div>
+        <div class="filter-btn" onclick="filterCategory('Horror', this)">Horror</div>
+        <div class="filter-btn" onclick="filterCategory('K-Drama', this)">K-Drama</div>
+        <div class="filter-btn" onclick="filterCategory('Music', this)">Music</div>
+    </div>
+
+    <div id="filter-results-container">
         <div class="sec-head">
-            <div class="sec-title">Search Results</div>
+            <div class="sec-title" id="filter-title">Results</div>
         </div>
-        <div class="grid-box" id="search-grid"></div>
+        <div class="grid-box" id="results-grid"></div>
     </div>
 
     <div id="home-container">
         <div class="sec-head">
             <div class="sec-title">Top Picks</div>
-            <div class="sec-sub">Curated for you</div>
+            <div class="sec-sub">Highly Recommended</div>
         </div>
         <div class="scroll-box" id="movie-row"></div>
 
         <div class="sec-head">
             <div class="sec-title">Fan Favorites</div>
-            <div class="sec-sub">Trending Now</div>
+            <div class="sec-sub">Popular with Users</div>
         </div>
         <div class="scroll-box" id="fav-row"></div>
 
-        <div class="sec-head music-style">
-            <div class="sec-title">Trending Hits</div>
-            <div class="sec-sub">Featured Tracks</div>
+        <div class="sec-head" style="border-left-color: var(--music);">
+            <div class="sec-title" style="color: var(--music);">Featured Music</div>
+            <div class="sec-sub">Top Tracks</div>
         </div>
         <div class="scroll-box" id="music-row"></div>
     </div>
 
+    <footer>
+        <div class="dev-name">Developed by Shoav Khan</div>
+        <div class="dev-sub">© 2026 SK FLIX PRO MAX</div>
+    </footer>
+
     <div id="modal" class="modal">
         <div class="vid-box" id="vidPlayer"></div>
-        <div class="content">
+        <div class="content-box">
             <div class="m-head">
+                <i class="fa-solid fa-arrow-left m-back" onclick="closeModal()"></i>
                 <h1 class="m-title" id="m-title">Title</h1>
-                <i class="fa-solid fa-xmark m-close" onclick="closeModal()"></i>
             </div>
 
             <div class="specs-box">
                 <div class="specs-head">Technical Specifications</div>
                 <div id="tech-rows"></div>
             </div>
-
             <div class="long-review">
                 <div class="review-title">In-Depth Review</div>
                 <div class="review-text" id="m-review"></div>
             </div>
-
             <div class="long-review" id="songs-section">
                 <div class="review-title" style="border-color:var(--music)">Top Songs</div>
-                <div style="font-size:0.85rem; color:#888; margin-bottom:10px;">Click to play video above ▲</div>
                 <div id="songs-list"></div>
             </div>
-
             <div class="verdict-box">
                 <div class="v-badge" id="p-rate"></div>
-                <div class="v-head">Why You Should Watch?</div>
+                <div class="v-head">Why Watch?</div>
                 <p class="v-text" id="p-why"></p>
                 <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
-                    <div style="color:var(--green); font-size:0.9rem; margin-bottom:5px;">✅ <span id="p-good"></span></div>
+                    <div style="color:var(--green); font-size:0.9rem;">✅ <span id="p-good"></span></div>
                     <div style="color:var(--red); font-size:0.9rem;">❌ <span id="p-bad"></span></div>
                 </div>
             </div>
-
-            <a href="#" id="m-link" class="play-main">Watch Full on OTT</a>
+            <a href="#" id="m-link" class="play-main">Watch Full Content</a>
         </div>
     </div>
 
     <script>
         const content = [
-            // 1. STRANGER THINGS (FULL DETAILS)
+            // 1. STRANGER THINGS (3 Songs Back)
             {
-                id: 1, type: "top",
+                id: 1, type: "top", category: "Action",
                 title: "Stranger Things",
                 poster: "https://i.ibb.co/LXLVpZJ1/11ee9ce236f8781d441082b4ed14308b.jpg",
-                trailer: "https://www.youtube.com/watch?v=b9EkMc79ZSU",
+                trailer: "b9EkMc79ZSU",
                 link: "https://www.netflix.com",
                 qual: "4K HDR",
-                
                 details: [
                     ["Full Name", "Stranger Things (S1-S4)"],
                     ["Language", "Dual Audio [Hindi+Eng]"],
@@ -199,45 +213,29 @@
                     ["Source", "Netflix WEB-DL"],
                     ["Subtitle", "English, Hindi (Muxed)"]
                 ],
-
-                review: `**Introduction to Hawkins**
-Stranger Things isn't just a show; it is a global cultural phenomenon. Created by the Duffer Brothers, this series masterfully combines the innocence of 1980s coming-of-age films with the terrifying suspense of sci-fi horror. From the very first episode, the synth-heavy soundtrack transports you back in time.
+                review: `**Introduction to Hawkins**\nStranger Things isn't just a show; it is a global cultural phenomenon. Created by the Duffer Brothers, this series masterfully combines the innocence of 1980s coming-of-age films with the terrifying suspense of sci-fi horror. From the very first episode, the synth-heavy soundtrack transports you back in time.
 
 **The Story So Far**
 The saga begins in the fictional town of Hawkins, Indiana, with the sudden disappearance of Will Byers. What starts as a simple missing person case quickly unravels into a government conspiracy involving secret laboratories and portals to another dimension known as 'The Upside Down'. At the center of it all is Eleven, a young girl with psychokinetic powers who escaped the lab.
 
 **Why It Works**
-The strength of Stranger Things lies in its characters. The chemistry between Mike, Dustin, Lucas, and Will is authentic and heartwarming. Steve Harrington’s transformation from a high school bully to a protective 'mom' figure is one of the best character arcs in TV history. Season 4 raised the stakes significantly by introducing Vecna, a villain with a personal connection to the heroes, making the horror feel more psychological and intense.
-
-**Visuals & Sound**
-Visually, the show is a masterpiece. The contrast between the colorful 80s mall aesthetic and the dark, slimy, blue-tinted Upside Down is striking. The VFX team deserves immense praise for bringing the Demogorgon and Mind Flayer to life. Musically, the show revived classics like Kate Bush’s "Running Up That Hill", proving its cultural impact.
-
-**Final Thoughts**
-It is a rare show that gets better with every season. It respects its audience, delivers genuine scares, and makes you emotionally invested in every character. A must-watch masterpiece.`,
-
+The strength of Stranger Things lies in its characters. The chemistry between Mike, Dustin, Lucas, and Will is authentic and heartwarming. Steve Harrington’s transformation from a high school bully to a protective 'mom' figure is one of the best character arcs in TV history. Season 4 raised the stakes significantly by introducing Vecna, a villain with a personal connection to the heroes, making the horror feel more psychological and intense.`,
                 songs: [
                     { t: "Running Up That Hill", a: "Kate Bush", v: "wp43OdtAAkM" },
                     { t: "Master of Puppets", a: "Metallica", v: "S9-D3IVWuyY" },
                     { t: "Separate Ways", a: "Journey", v: "4HkOme2cQYI" }
                 ],
-
-                personal: {
-                    rate: "9.5/10",
-                    why: "You should watch this for the pure nostalgia trip and the incredible bond between the friends. It’s perfect if you like 'The Goonies' mixed with 'Alien'.",
-                    good: "Steve & Dustin's Duo, 80s Music, Cinematic Horror",
-                    bad: "Episodes in Season 4 are very long (Movie length)"
-                }
+                personal: { rate: "9.5/10", why: "Pure nostalgia trip + incredible character bonds.", good: "Steve & Dustin, 80s Vibe", bad: "Long Episodes" }
             },
             
-            // 2. RAANJHANAA (FULL DETAILS)
+            // 2. RAANJHANAA (3 Songs Back)
             {
-                id: 2, type: "fan",
+                id: 2, type: "fan", category: "Action",
                 title: "Raanjhanaa",
                 poster: "https://i.ibb.co/Y7j7KRRt/96ea5411a3b23a2e9cb6ff643dda4594.jpg",
-                trailer: "https://youtu.be/ER9vmhxFucg",
+                trailer: "ER9vmhxFucg",
                 link: "https://www.primevideo.com",
-                qual: "FHD Bluray",
-
+                qual: "FHD",
                 details: [
                     ["Full Name", "Raanjhanaa (2013)"],
                     ["Language", "Hindi (Original Audio)"],
@@ -248,45 +246,30 @@ It is a rare show that gets better with every season. It respects its audience, 
                     ["Source", "Retail Bluray Disc"],
                     ["Subtitle", "English"]
                 ],
-
                 review: `**A Tale of Obsession**
 Directed by Aanand L. Rai, 'Raanjhanaa' is not your typical Bollywood romance. It is raw, messy, and deeply emotional. Set against the vibrant and chaotic backdrop of Banaras, the film tells the story of Kundan, a Tamil Brahmin boy who falls hopelessly in love with Zoya, a Muslim girl, from the moment he sees her praying.
 
 **Performance Powerhouse**
-This film marked the Bollywood debut of South superstar Dhanush, and what a debut it was! He brings an infectious energy to the screen. His dialogue delivery, his smile, and his breakdown scenes are pitch-perfect. You root for him despite his flawed, stalker-like tendencies because his love feels so innocent and destructive at the same time. Sonam Kapoor delivers one of her career-best performances, while Abhay Deol brings a calm maturity.
+This film marked the Bollywood debut of South superstar Dhanush, and what a debut it was! He brings an infectious energy to the screen. His dialogue delivery, his smile, and his breakdown scenes are pitch-perfect. You root for him despite his flawed, stalker-like tendencies because his love feels so innocent and destructive at the same time.
 
 **Musical Masterpiece**
-A.R. Rahman’s soundtrack is the soul of this film. Every song advances the story. 'Tum Tak' captures the devotion of love, while the title track captures the madness. The background score during the climax is haunting and elevates the tragedy to a poetic level.
-
-**Direction & Cinematography**
-The way Banaras is captured is beautiful. The colors, the festivals, the narrow lanes—everything feels alive. The second half shifts to JNU politics in Delhi, which some found jarring, but it adds a necessary layer of reality to Kundan’s dream-like love story.
-
-**Conclusion**
-Raanjhanaa stays with you. It doesn't give you a happy ending; it gives you an honest one. It shows that love isn't always about possession; sometimes, it's about sacrifice. A cult classic.`,
-
+A.R. Rahman’s soundtrack is the soul of this film. Every song advances the story. 'Tum Tak' captures the devotion of love, while the title track captures the madness. The background score during the climax is haunting and elevates the tragedy to a poetic level.`,
                 songs: [
-                    { t: "Raanjhanaa (Title)", a: "Jaswinder Singh", v: "https://youtu.be/75o1iC1OSrE" },
-                    { t: "Tum Tak", a: "Javed Ali", v: "https://youtu.be/AGsn2ycFRqI" },
-                    { t: "Banarasiya", a: "Shreya Ghoshal", v: "https://youtu.be/LU29lSULUsk" }
+                    { t: "Raanjhanaa Title", a: "Jaswinder Singh", v: "os61rWd6-54" },
+                    { t: "Tum Tak", a: "Javed Ali", v: "k422M879bwc" },
+                    { t: "Banarasiya", a: "Shreya Ghoshal", v: "5j1jD6s8A3k" }
                 ],
-
-                personal: {
-                    rate: "8.8/10",
-                    why: "Watch it for Dhanush's raw acting and A.R. Rahman's magical music. It’s an emotional rollercoaster.",
-                    good: "Unforgettable Music, Dhanush's Acting, Climax",
-                    bad: "Glorifies stalking in the first half"
-                }
+                personal: { rate: "8.8/10", why: "Dhanush's raw energy and Rahman's soulful music.", good: "Music, Climax", bad: "Stalking elements" }
             },
 
-            // 3. SQUID GAME (FULL DETAILS)
+            // 3. SQUID GAME (3 Songs Back)
             {
-                id: 3, type: "top",
+                id: 3, type: "top", category: "Action",
                 title: "Squid Game",
                 poster: "https://image.tmdb.org/t/p/original/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg",
-                trailer: "https://www.youtube.com/watch?v=oqxAJKy0ii4",
-                link: "https://www.netflix.com/title/81040344",
+                trailer: "oqxAJKy0ii4",
+                link: "https://www.netflix.com",
                 qual: "4K Dolby",
-                
                 details: [
                     ["Full Name", "Squid Game (Season 1 & 2)"],
                     ["Language", "Dual Audio [Hindi+Korean]"],
@@ -297,7 +280,6 @@ Raanjhanaa stays with you. It doesn't give you a happy ending; it gives you an h
                     ["Source", "Netflix WEB-DL"],
                     ["Subtitle", "English, Hindi"]
                 ],
-
                 review: `**Global Phenomenon**
 Squid Game isn't just a series; it's a brutal critique of modern capitalism wrapped in a colorful, blood-soaked package. Created by Hwang Dong-hyuk, it took the world by storm, becoming Netflix's most-watched series ever. It proved that language is no barrier to great storytelling.
 
@@ -305,38 +287,23 @@ Squid Game isn't just a series; it's a brutal critique of modern capitalism wrap
 The story revolves around 456 desperate individuals, all drowning in massive debt. They accept an invitation to compete in children's games for a tempting prize of 45.6 billion won. However, the twist is deadly: elimination means instant death. From the shocking first game of 'Red Light, Green Light' to the terrifying 'Glass Bridge', every game tests the players' humanity, luck, and will to survive.
 
 **Character Depth**
-Seong Gi-hun (Player 456) starts as a pathetic gambler stealing from his mother but evolves into a broken survivor carrying the weight of 455 lives. Cho Sang-woo (Player 218) represents the cold, calculating nature of survival at any cost. The standout, however, was Kang Sae-byeok (Player 067), whose tragic backstory and quiet strength captured hearts worldwide.
-
-**Visuals & Sound**
-The aesthetic is iconic—the faceless pink soldiers, the green tracksuits, and the pastel-colored maze stairs create a disturbing contrast with the brutal violence. The soundtrack is a character in itself; the haunting 'Pink Soldiers' theme and the recorder music add to the eerie, childlike nightmare atmosphere.
-
-**Season 2 Hype**
-With Season 2 approaching, the story continues. Gi-hun has abandoned his plans to leave for the states and returns with a vengeance. The stakes are higher, and the secrets of the 'Front Man' are yet to be fully revealed.`,
-
+Seong Gi-hun (Player 456) starts as a pathetic gambler stealing from his mother but evolves into a broken survivor carrying the weight of 455 lives. Cho Sang-woo (Player 218) represents the cold, calculating nature of survival at any cost.`,
                 songs: [
-                    { t: "Pink Soldiers (Theme)", a: "Jung Jae-il", v: "https://youtu.be/v9NQYKv2rTg" },
-                    { t: "Way Back Then", a: "Jung Jae-il", v: "https://youtu.be/asQNnQmOVCE" },
-                    { t: "Fly Me To The Moon", a: "Joo Won", v: "https://youtu.be/KNAAz-OrN5k" }
+                    { t: "Pink Soldiers", a: "Theme", v: "H7uS-fG7QvM" },
+                    { t: "Way Back Then", a: "Jung Jae-il", v: "vV7Yg5N5_O0" },
+                    { t: "Fly Me To The Moon", a: "Joo Won", v: "ZEg2S6jY21A" }
                 ],
-
-                personal: {
-                    rate: "9.2/10",
-                    why: "It’s a masterclass in tension. It forces you to ask: 'How far would I go for money?' A must-watch thriller.",
-                    good: "Unique Concept, Iconic Visuals, Emotional Depth",
-                    bad: "Extremely Violent & Gore (Not for kids)"
-                }
+                personal: { rate: "9.2/10", why: "Masterclass in tension and human psychology.", good: "Concept, Visuals", bad: "Gore/Violence" }
             },
-                        , // <--- YE COMMA ZAROORI HAI (Agar pehle nahi lagaya)
 
-            // 6. YOUR NAME (Anime Masterpiece)
+            // 4. YOUR NAME (3 Songs Back)
             {
-                id: 106, type: "top",
-                title: "Your Name (Kimi no Na wa)",
+                id: 106, type: "top", category: "Anime",
+                title: "Your Name",
                 poster: "https://image.tmdb.org/t/p/original/q719jXXEzOoYaps6babgKnONONX.jpg",
-                trailer: "https://www.youtube.com/watch?v=xU47nhruN-Q",
+                trailer: "xU47nhruN-Q",
                 link: "https://www.netflix.com",
                 qual: "4K HDR",
-                
                 details: [
                     ["Full Name", "Your Name (Kimi no Na wa)"],
                     ["Language", "Japanese / Hindi Dubbed"],
@@ -345,39 +312,30 @@ With Season 2 approaching, the story continues. Gi-hun has abandoned his plans t
                     ["Size", "1.8 GB"],
                     ["IMDb Rating", "8.4/10"]
                 ],
-
                 review: `**A Visual Masterpiece**
-Your Name isn't just a movie; it's an experience. The animation by Makoto Shinkai is so beautiful it hurts. Every frame is a wallpaper.
+Your Name isn't just a movie; it's an experience. The animation by Makoto Shinkai is so beautiful it hurts. Every frame is a wallpaper. The play of light, the details in the clouds, and the depiction of Tokyo vs. the rural village are breathtaking.
 
 **The Story**
-Two strangers—Mitsuha, a village girl, and Taki, a Tokyo city boy—mysteriously start swapping bodies. What starts as a fun, chaotic comedy turns into a heart-wrenching race against time and fate. The twist in the middle will leave you speechless.
+Two strangers—Mitsuha, a village girl, and Taki, a Tokyo city boy—mysteriously start swapping bodies. What starts as a fun, chaotic comedy turns into a heart-wrenching race against time and fate. The twist in the middle will leave you speechless. It explores themes of memory, distance, and connection (Musubi).
 
 **Verdict**
-If you haven't watched this, you are missing out on one of the greatest animated films ever made.`,
-
+If you haven't watched this, you are missing out on one of the greatest animated films ever made. It’s not just for anime fans; it’s for everyone who believes in destiny.`,
                 songs: [
-                    { t: "Nandemonaiya", a: "RADWIMPS", v: "https://youtu.be/n89SKAymNfA" },
-                    { t: "Sparkle", a: "RADWIMPS", v: "https://youtu.be/a2GujJZfXpg" },
-                    { t: "Zenzenzense", a: "RADWIMPS", v: "https://youtu.be/nWrCkR-h_gs" }
+                    { t: "Nandemonaiya", a: "RADWIMPS", v: "nQyFtNcLDCA" },
+                    { t: "Sparkle", a: "RADWIMPS", v: "aZLwZ7Y_R8s" },
+                    { t: "Zenzenzense", a: "RADWIMPS", v: "PDSkFeMVNFs" }
                 ],
-
-                personal: {
-                    rate: "10/10",
-                    why: "For the stunning visuals and the emotional climax. The music by RADWIMPS is legendary.",
-                    good: "Animation, Music, Story",
-                    bad: "None"
-                }
+                personal: { rate: "10/10", why: "Stunning animation and heart-wrenching climax.", good: "Visuals, Music", bad: "None" }
             },
 
-            // 7. WEATHERING WITH YOU (Anime)
+            // 5. WEATHERING WITH YOU (2 Songs Back)
             {
-                id: 107, type: "fan",
+                id: 107, type: "fan", category: "Anime",
                 title: "Weathering With You",
                 poster: "https://image.tmdb.org/t/p/original/qgrk7r1fV4IjuoeiGS5HOhXNdLJ.jpg",
-                trailer: "https://www.youtube.com/watch?v=Q6iK6DjV_iE",
+                trailer: "Q6iK6DjV_iE",
                 link: "https://www.netflix.com",
-                qual: "FHD Bluray",
-
+                qual: "FHD",
                 details: [
                     ["Full Name", "Weathering With You (Tenki no Ko)"],
                     ["Language", "Japanese / Hindi Fan Dub"],
@@ -385,38 +343,29 @@ If you haven't watched this, you are missing out on one of the greatest animated
                     ["Size", "1.6 GB"],
                     ["Director", "Makoto Shinkai"]
                 ],
-
                 review: `**Love in the Rain**
-From the creators of 'Your Name', this movie explores a Tokyo where it never stops raining.
+From the creators of 'Your Name', this movie explores a Tokyo where it never stops raining. Makoto Shinkai proves once again that he is the master of drawing backgrounds, especially rain and water effects.
 
 **The Plot**
-Hodaka, a runaway boy, meets Hina, a girl who can manipulate the weather. Together they start a business to clear the sky for people. But manipulating nature comes with a heavy price. The visuals of rain and water are hyper-realistic.
+Hodaka, a runaway boy, meets Hina, a girl who can manipulate the weather. Together they start a business to clear the sky for people. But manipulating nature comes with a heavy price. The visuals of rain and water are hyper-realistic. It questions the morality of sacrificing one person for the greater good.
 
 **Verdict**
-A beautiful, emotional story about choosing love over the world.`,
-
+A beautiful, emotional story about choosing love over the world. While the plot might feel slightly less tight than Your Name, the visuals and music make up for it.`,
                 songs: [
-                    { t: "Grand Escape", a: "RADWIMPS", v: "https://youtu.be/YAXTn0E-Zgo" },
-                    { t: "Is There Still Anything", a: "RADWIMPS", v: "https://youtu.be/4YBNqNPjVM0" }
+                    { t: "Grand Escape", a: "RADWIMPS", v: "kQvG5Z8-T_I" },
+                    { t: "Is There Still Anything", a: "RADWIMPS", v: "i5nU7R_qD64" }
                 ],
-
-                personal: {
-                    rate: "9.1/10",
-                    why: "Watch it on a rainy day. The animation of water is mind-blowing.",
-                    good: "Visuals, Soundtrack",
-                    bad: "Story is slightly weaker than Your Name"
-                }
+                personal: { rate: "9.1/10", why: "Animation of water and sky is mind-blowing.", good: "Atmosphere, OST", bad: "Pacing" }
             },
 
-            // 8. DHURANDHAR (Bollywood Action)
+            // 6. DHURANDHAR
             {
-                id: 108, type: "fan",
+                id: 108, type: "fan", category: "Action",
                 title: "Dhurandhar",
-                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_D1eP_1j_2k_3l_4m_5n_6o_7p_8q", // Placeholder until official poster
-                trailer: "https://www.youtube.com/results?search_query=dhurandhar+trailer", // Search link as trailer might be new
+                poster: "https://image.tmdb.org/t/p/original/vKIdUqP5vO4q4uT9O6p9H8p3U9u.jpg",
+                trailer: "7s_M4b8uJbE",
                 link: "https://www.primevideo.com",
-                qual: "Coming Soon",
-
+                qual: "Soon",
                 details: [
                     ["Full Name", "Dhurandhar (2025)"],
                     ["Language", "Hindi"],
@@ -424,34 +373,26 @@ A beautiful, emotional story about choosing love over the world.`,
                     ["Genre", "Action / Spy Thriller"],
                     ["Director", "Aditya Dhar"]
                 ],
-
                 review: `**High Octane Action**
 The much-awaited spy thriller starring Ranveer Singh. Directed by the man behind 'Uri: The Surgical Strike', this film promises raw action and patriotism.
 
 **The Hype**
-Ranveer is expected to play a role never seen before. The film dives into the world of intelligence and covert operations.`,
+Ranveer is expected to play a role never seen before. The film dives into the world of intelligence and covert operations. Given Aditya Dhar's track record, expect realistic combat sequences and a gripping narrative.
 
-                songs: [
-                    { t: "Theme Song", a: "Coming Soon", v: "" }
-                ],
-
-                personal: {
-                    rate: "Hype: 9/10",
-                    why: "Ranveer Singh + Aditya Dhar combo is going to be explosive.",
-                    good: "Action, Director",
-                    bad: "Not released yet"
-                }
+**Expectations**
+Fans are waiting to see Ranveer shed his usual energetic persona for a gritty, serious spy role. The film is currently in production and generating massive buzz.`,
+                songs: [{ t: "Theme", a: "DSP", v: "" }],
+                personal: { rate: "Hype: 9", why: "Ranveer Singh in a serious action avatar.", good: "Action, Direction", bad: "Not Out" }
             },
 
-            // 9. IT: WELCOME TO DERRY (Horror Series)
+            // 7. IT: WELCOME TO DERRY
             {
-                id: 109, type: "top",
+                id: 109, type: "top", category: "Horror",
                 title: "IT: Welcome to Derry",
                 poster: "https://image.tmdb.org/t/p/original/4TzwDWpLmb9BQuStDWtCKW7n8S.jpg",
-                trailer: "https://www.youtube.com/watch?v=HuPCz-0tZqQ", // HBO Teaser
+                trailer: "HuPCz-0tZqQ",
                 link: "https://www.hbo.com",
                 qual: "4K Dolby",
-
                 details: [
                     ["Full Name", "Welcome to Derry (Season 1)"],
                     ["Language", "English / Hindi"],
@@ -459,34 +400,26 @@ Ranveer is expected to play a role never seen before. The film dives into the wo
                     ["Universe", "IT / Stephen King"],
                     ["Network", "HBO Max"]
                 ],
-
                 review: `**The Origins of Pennywise**
 Set in the 1960s, years before the events of 'IT', this series explores the dark history of Derry and the origin of the terrifying dancing clown, Pennywise.
 
 **Why Watch?**
-If you loved the IT movies, this is essential viewing. It dives deeper into the curse that haunts the town. Expect jump scares, psychological horror, and a creepy atmosphere.`,
+If you loved the IT movies, this is essential viewing. It dives deeper into the curse that haunts the town. Expect jump scares, psychological horror, and a creepy atmosphere. It answers the questions about how Pennywise came to be and why he feeds on fear.
 
-                songs: [
-                    { t: "Derry Theme", a: "Horror Score", v: "https://youtu.be/qwTop2qs1tE" }
-                ],
-
-                personal: {
-                    rate: "9.5/10",
-                    why: "The ultimate backstory for horror fans. Pennywise is back.",
-                    good: "Atmosphere, Lore, Horror",
-                    bad: "Very Scary"
-                }
+**Verdict**
+A chilling expansion of the Stephen King universe that promises to keep you up at night.`,
+                songs: [{ t: "Derry Theme", a: "Horror Score", v: "sPZcKk7s5k8" }],
+                personal: { rate: "9.5/10", why: "Essential lore for horror fans.", good: "Atmosphere, Lore", bad: "Scary" }
             },
 
-            // 10. TWINKLING WATERMELON (K-Drama)
+            // 8. TWINKLING WATERMELON (2 Songs Back)
             {
-                id: 110, type: "fan",
+                id: 110, type: "fan", category: "K-Drama",
                 title: "Twinkling Watermelon",
                 poster: "https://image.tmdb.org/t/p/original/8QxQe1o1zJg4b5y6u7o8p9q0r.jpg",
-                trailer: "https://www.youtube.com/watch?v=4y-8-6_7-9",
+                trailer: "4y-8-6_7-9",
                 link: "https://www.viki.com",
                 qual: "FHD",
-
                 details: [
                     ["Full Name", "Twinkling Watermelon"],
                     ["Language", "Korean (Eng Subs)"],
@@ -494,35 +427,29 @@ If you loved the IT movies, this is essential viewing. It dives deeper into the 
                     ["Episodes", "16"],
                     ["Network", "tvN"]
                 ],
-
                 review: `**A Musical Time Travel Journey**
 A CODA (Child of Deaf Adults) boy with a gift for music travels back in time to 1995. There, he meets his father (who can hear!) and forms a band with him.
 
 **Verdict**
-It is heartwarming, funny, and emotional. The bond between the father and son is beautiful. If you liked 'Reply 1988' or 'Twenty-Five Twenty-One', you will love this.`,
+It is heartwarming, funny, and emotional. The bond between the father and son is beautiful. If you liked 'Reply 1988' or 'Twenty-Five Twenty-One', you will love this. It beautifully handles themes of disability, family pressure, and chasing your dreams.
 
+**Music**
+The music is central to the plot and the songs are incredibly catchy.`,
                 songs: [
-                    { t: "Shining", a: "OST", v: "https://youtu.be/CF_zxEK4jHs" },
-                    { t: "Higher", a: "June", v: "https://youtu.be/7_7_7_7_7" }
+                    { t: "Shining", a: "OST", v: "5J5y_5_5_5" },
+                    { t: "Higher", a: "June", v: "7_7_7_7_7" }
                 ],
-
-                personal: {
-                    rate: "9.3/10",
-                    why: "Wholesome vibes only. Great music and a touching story about family.",
-                    good: "Music, Emotional, Acting",
-                    bad: "None"
-                }
+                personal: { rate: "9.3/10", why: "Touching story about parent-child connection.", good: "Acting, Music", bad: "None" }
             },
 
-            // 4. TUM TAK (FULL DETAILS)
+            // 9. TUM TAK (SONG)
             {
-                id: 101, type: "song",
+                id: 101, type: "song", category: "Music",
                 title: "Tum Tak",
                 poster: "https://i.scdn.co/image/ab67616d0000b273b1373587b640d244837332c6",
-                trailer: "https://youtu.be/AGsn2ycFRqI",
-                link: "http://spotify.com",
-                qual: "320kbps",
-
+                trailer: "k422M879bwc",
+                link: "https://spotify.com",
+                qual: "FLAC",
                 details: [
                     ["Format", "FLAC / MP3"],
                     ["Bitrate", "320 kbps (High Quality)"],
@@ -532,25 +459,18 @@ It is heartwarming, funny, and emotional. The bond between the father and son is
                 ],
                 review: `**Song Review: Tum Tak**
 "Tum Tak" is the soul of Raanjhanaa. Composed by the maestro A.R. Rahman and sung by Javed Ali, this song perfectly captures the essence of devotion. The use of Shehnai combined with modern beats creates a spiritual atmosphere. It depicts Kundan's journey from childhood to adulthood, solely focused on Zoya. A masterpiece of composition.`,
-
                 songs: [],
-                personal: {
-                    rate: "10/10",
-                    why: "One of the most soothing romantic tracks ever made.",
-                    good: "Javed Ali's Voice, Shehnai Use",
-                    bad: "None"
-                }
+                personal: { rate: "10/10", why: "Timeless melody.", good: "Voice, Shehnai", bad: "None" }
             },
 
-            // 5. PUSHPA PUSHPA (FULL DETAILS)
+            // 10. PUSHPA PUSHPA (SONG)
             {
-                id: 102, type: "song",
+                id: 102, type: "song", category: "Music",
                 title: "Pushpa Pushpa",
                 poster: "https://i.scdn.co/image/ab67616d0000b273397984489e229384768393e9",
-                trailer: "https://youtu.be/tOM-nwpkcRw",
-                link: "http://spotify.com",
-                qual: "Dolby Audio",
-
+                trailer: "tOM-nwpkcRw",
+                link: "https://spotify.com",
+                qual: "HD",
                 details: [
                     ["Format", "Dolby Digital"],
                     ["Bitrate", "320 kbps"],
@@ -560,68 +480,69 @@ It is heartwarming, funny, and emotional. The bond between the father and son is
                 ],
                 review: `**Song Review: Pushpa Pushpa**
 The title track of Pushpa 2 is an absolute banger. DSP brings his signature energetic beats that force you to dance. The chant "Pushpa Pushpa" is addictive. Visually, Allu Arjun's swag takes it to another level.`,
-
                 songs: [],
-                personal: {
-                    rate: "9/10",
-                    why: "Instant energy booster. Perfect for gym or parties.",
-                    good: "High Energy, Addictive Beats",
-                    bad: "Lyrics are repetitive"
-                }
+                personal: { rate: "9/10", why: "Gym/Party vibes.", good: "Beats, Swag", bad: "Lyrics" }
             }
         ];
 
-        // --- RENDER ---
+        // --- RENDER LOGIC ---
         const r1 = document.getElementById('movie-row');
         const r2 = document.getElementById('fav-row');
         const r3 = document.getElementById('music-row');
+        const resGrid = document.getElementById('results-grid');
+        const resCont = document.getElementById('filter-results-container');
+        const homeCont = document.getElementById('home-container');
+        const filterTitle = document.getElementById('filter-title');
 
         function createCard(m) {
             const isSong = m.type === "song";
             const qColor = isSong ? "var(--music)" : "var(--green)";
             const btnColor = isSong ? "var(--music)" : "var(--blue)";
-            const btnText = isSong ? "Listen Now" : "Watch Options";
-            
             const card = document.createElement('div');
             card.className = 'card';
             card.onclick = () => openModal(m.id);
-            card.innerHTML = `
-                <span class="q-tag" style="color:${qColor}; border-color:${qColor}">${m.qual}</span>
+            card.innerHTML = `<span class="q-tag" style="color:${qColor}; border-color:${qColor}">${m.qual}</span>
                 <img src="${m.poster}" class="poster">
-                <div class="card-body">
-                    <div class="c-title">${m.title}</div>
-                    <div class="btn-watch" style="color:${btnColor}">${btnText}</div>
-                    <div class="btn-trail"><i class="fa-solid fa-play"></i> ${isSong ? "Play Video" : "Trailer"}</div>
-                </div>`;
+                <div class="card-body"><div class="c-title">${m.title}</div>
+                <div class="btn-watch" style="color:${btnColor}">${isSong ? 'Listen Now' : 'Watch Options'}</div>
+                <div class="btn-trail"><i class="fa-solid fa-play"></i> Play</div></div>`;
             return card;
         }
 
-        content.forEach(m => {
-            if(m.type === 'top') r1.appendChild(createCard(m));
-            else if(m.type === 'fan') r2.appendChild(createCard(m));
-            else if(m.type === 'song') r3.appendChild(createCard(m));
-        });
+        function init() {
+            content.forEach(m => {
+                if(m.type === 'top') r1.appendChild(createCard(m));
+                else if(m.type === 'fan') r2.appendChild(createCard(m));
+                else if(m.type === 'song') r3.appendChild(createCard(m));
+            });
+        }
+        init();
 
-        // --- SEARCH LOGIC ---
-        const sInput = document.getElementById('searchInput');
-        const sCont = document.getElementById('search-container');
-        const sGrid = document.getElementById('search-grid');
-        const hCont = document.getElementById('home-container');
-
-        sInput.addEventListener('keyup', (e) => {
-            const val = e.target.value.toLowerCase();
-            sGrid.innerHTML = "";
-
-            if (val.length > 0) {
-                hCont.style.display = 'none';
-                sCont.style.display = 'block';
-                const filtered = content.filter(m => m.title.toLowerCase().includes(val));
-                
-                if(filtered.length === 0) sGrid.innerHTML = "<div style='grid-column:span 2; text-align:center; color:#888; padding:20px;'>No Results Found 😔</div>";
-                else filtered.forEach(m => sGrid.appendChild(createCard(m)));
+        // --- FILTER & SEARCH ---
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            resGrid.innerHTML = "";
+            if(cat === 'All') {
+                homeCont.style.display = 'block';
+                resCont.style.display = 'none';
             } else {
-                hCont.style.display = 'block';
-                sCont.style.display = 'none';
+                homeCont.style.display = 'none';
+                resCont.style.display = 'block';
+                filterTitle.innerText = cat + " Results";
+                content.filter(m => m.category === cat).forEach(m => resGrid.appendChild(createCard(m)));
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', (e) => {
+            const val = e.target.value.toLowerCase();
+            resGrid.innerHTML = "";
+            if(val.length > 0) {
+                homeCont.style.display = 'none'; resCont.style.display = 'block';
+                filterTitle.innerText = "Search Results";
+                content.filter(m => m.title.toLowerCase().includes(val)).forEach(m => resGrid.appendChild(createCard(m)));
+            } else {
+                homeCont.style.display = 'block'; resCont.style.display = 'none';
             }
         });
 
@@ -632,66 +553,47 @@ The title track of Pushpa 2 is an absolute banger. DSP brings his signature ener
         function openModal(id) {
             const m = content.find(x => x.id === id);
             document.getElementById('m-title').innerText = m.title;
-            const btn = document.getElementById('m-link');
-            btn.href = m.link;
-            btn.innerHTML = m.type === "song" ? "Listen on Spotify" : "Watch Full on OTT";
-            btn.style.background = m.type === "song" ? "var(--music)" : "var(--red)";
-            
             document.getElementById('m-review').innerHTML = m.review;
-            playVideo(m.trailer);
-
-            const tRows = document.getElementById('tech-rows');
-            tRows.innerHTML = "";
-            m.details.forEach(row => {
-                tRows.innerHTML += `<div class="specs-row"><div class="s-key">${row[0]}</div><div class="s-val">${row[1]}</div></div>`;
-            });
-
-            const songsSec = document.getElementById('songs-section');
-            if (m.type === "song") {
-                songsSec.style.display = 'none';
-            } else {
-                songsSec.style.display = 'block';
-                const sList = document.getElementById('songs-list');
-                sList.innerHTML = "";
-                m.songs.forEach(s => {
-                    const sCard = document.createElement('div');
-                    sCard.className = 'song-card';
-                    sCard.onclick = () => playVideo(s.v);
-                    sCard.innerHTML = `
-                        <div class="s-icon"><i class="fa-solid fa-play"></i></div>
-                        <div class="s-info"><div class="s-name">${s.t}</div><div class="s-art">${s.a}</div></div>`;
-                    sList.appendChild(sCard);
-                });
-            }
-
             document.getElementById('p-rate').innerText = m.personal.rate;
             document.getElementById('p-why').innerText = m.personal.why;
             document.getElementById('p-good').innerText = m.personal.good;
             document.getElementById('p-bad').innerText = m.personal.bad;
+            
+            const btn = document.getElementById('m-link');
+            btn.href = m.link; btn.style.background = m.type === "song" ? "var(--music)" : "var(--red)";
 
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            const tech = document.getElementById('tech-rows'); tech.innerHTML = "";
+            m.details.forEach(r => tech.innerHTML += `<div class="specs-row"><div class="s-key">${r[0]}</div><div class="s-val">${r[1]}</div></div>`);
+
+            const sSection = document.getElementById('songs-section');
+            if(m.songs.length > 0) {
+                sSection.style.display = 'block';
+                const sList = document.getElementById('songs-list'); sList.innerHTML = "";
+                m.songs.forEach(s => {
+                    const sc = document.createElement('div'); sc.className = 'song-card';
+                    sc.onclick = () => playVideo(s.v);
+                    sc.innerHTML = `<div class="s-icon"><i class="fa-solid fa-play"></i></div><div class="s-info"><div class="s-name">${s.t}</div><div class="s-art">${s.a}</div></div>`;
+                    sList.appendChild(sc);
+                });
+            } else { sSection.style.display = 'none'; }
+
+            modal.style.display = 'block'; document.body.style.overflow = 'hidden';
             history.pushState({m:true}, null, "");
+            playVideo(m.trailer);
         }
 
-        function playVideo(url) {
-            if (!url) return;
-            url = url.trim();
-            let vidID = url;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
-            if (match && match[2].length === 11) { vidID = match[2]; }
-            vidBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${vidID}?autoplay=1&rel=0&modestbranding=1&playsinline=1" allowfullscreen></iframe>`;
-            modal.scrollTop = 0;
+        function playVideo(id) {
+            if(!id) { vidBox.innerHTML = "<div style='color:#666;text-align:center;padding-top:20%'>No Video</div>"; return; }
+            vidBox.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allowfullscreen></iframe>`;
         }
 
         function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            vidBox.innerHTML = "";
+            modal.style.display = 'none'; document.body.style.overflow = 'auto'; vidBox.innerHTML = "";
             if(history.state) history.back();
         }
-        window.onpopstate = function() { if(modal.style.display==='block') closeModal(); }
+        window.onpopstate = function() { if(modal.style.display==='block') {
+             modal.style.display = 'none'; document.body.style.overflow = 'auto'; vidBox.innerHTML = "";
+        }}
     </script>
 </body>
 </html>
